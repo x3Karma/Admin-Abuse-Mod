@@ -1,0 +1,158 @@
+{
+	"Name" : "Karma Mod Abuse",
+	"Description" : "Abuse admin powers for your own entertainment.",
+	"Version": "1.1.5",
+	"LoadPriority": 2,
+
+	// ui inits need to happen before so our init callbacks get called
+	"ConVars": [
+		{
+			"Name": "grant_admin",
+			"DefaultValue": "name1,name2,name3" // edit this to add admins or UID
+		}
+	],
+	"Scripts": [
+		{
+			"Path": "_gift_admin.gnut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "Gift_Admin_Init"
+			}
+		},
+		{
+			"Path": "spawncmd.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "AddCommands",
+				"After": "registerFunctionsAfter"
+			},
+		},
+		{
+			"Path": "announce.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "AnnounceCommand",
+			},
+		},
+		{
+			"Path": "getid.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "getIDCommand",
+			},
+		},
+		{
+			"Path": "checkplayername.nut",
+			"RunOn": "SERVER && MP",
+		},
+		{
+			"Path": "health.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "HealthCommand",
+			},
+		},
+		{
+			"Path": "predator.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "PredatorCommand",
+			},
+		},
+		{
+			"Path": "gift.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "GiftCommand",
+			},
+		},
+		{
+			"Path": "getteam.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "getTeamCommand",
+			},
+		},
+		{
+			"Path": "freeze.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "FreezeCommand",
+			},
+		},
+		{
+			"Path": "slay.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "SlayCommand",
+			},
+		},
+		{
+			"Path": "switchteams.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "STCommand",
+			},
+		},
+		{
+			"Path": "titanfallcmd.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "TitanfallCommand",
+			},
+		},
+		{
+			"Path": "vanish.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "VanishCommand",
+			},
+		},
+		{
+			"Path": "shuffleteams.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "ShuffleTeamsCommand",
+			},
+		},
+		{
+			"Path": "removeweapons.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "RemoveWeaponsCommand",
+			},
+		},
+		{
+			"Path": "fly.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "FlyCommand",
+			},
+		},
+		{
+			"Path": "teleport.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "TeleportCommand",
+			},
+		},
+		{
+			"Path": "rearm.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "RearmCommand",
+			},
+		},
+		{
+			"Path": "gift_weapons.nut",
+			"RunOn": "SERVER && MP",
+		},
+		{
+			"Path": "weaponmod.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "Mod",
+			},
+		},
+	],
+}
