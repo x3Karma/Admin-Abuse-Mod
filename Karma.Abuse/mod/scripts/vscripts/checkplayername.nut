@@ -50,7 +50,7 @@ void function CheckWeaponName(string name)
         weapons.append(blah)
     }
 
-    array<string> literallyeveryweapon = GetAllWeaponsByType( [ eItemTypes.PILOT_PRIMARY, eItemTypes.PILOT_SECONDARY, eItemTypes.PILOT_SPECIAL, eItemTypes.PILOT_ORDNANCE, eItemTypes.TITAN_PRIMARY ] )
+    array<string> literallyeveryweapon = GetAllWeaponsByType( [ eItemTypes.PILOT_PRIMARY, eItemTypes.PILOT_SECONDARY, eItemTypes.PILOT_SPECIAL, eItemTypes.PILOT_ORDNANCE, eItemTypes.TITAN_PRIMARY, eItemTypes.TITAN_ORDNANCE ] )
     foreach (string blah in literallyeveryweapon)
     {
         weapons.append(blah)

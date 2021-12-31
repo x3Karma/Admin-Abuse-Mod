@@ -78,7 +78,8 @@ global array<string> melee = ["melee_pilot_emptyhanded",
 								"mp_weapon_arena3",
 								"mp_ability_turretweapon",
 								"mp_weapon_smart_pistol"
-								"mp_ability_holopilot_nova"]
+								"mp_ability_holopilot_nova",
+								"mp_titanweapon_flightcore_rockets"]
 
 global array<string> kmods = ["extended_ammo",
 					 "silencer",

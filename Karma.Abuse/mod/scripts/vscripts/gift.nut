@@ -16,7 +16,7 @@ void function GiftCommand()
 	#if SERVER
 	AddClientCommandCallback("gift", Gift);
 	AddClientCommandCallback("fgift", ForceGift);
-	AddClientCommandCallback("forcegift", Gift);
+	AddClientCommandCallback("forcegift", ForceGift);
 	#endif
 }
 
@@ -34,11 +34,11 @@ bool function ForceGift(entity player, array<string> args)
 		return true;
 	}
 
-	// if player only typed "gift"
+	// if player only typed "fgift"
 	if (args.len() == 0)
 	{
 		print("Give a valid argument.");
-		print("Example: gift <weaponId> <playerId>");
+		print("Example: fgift/forcegift <weaponId> <playerId>");
 		print("You can check weaponId by typing give and pressing tab to scroll through the IDs.");
 		// print every single player's name and their id
 		int i = 0;
@@ -50,7 +50,7 @@ bool function ForceGift(entity player, array<string> args)
 		}
 		return true;
 	}
-	// if player typed "gift somethinghere"
+	// if player typed "fgift somethinghere"
 	switch (args[0]) {
 		case (""):
 		print("Give a valid argument.");
@@ -74,6 +74,7 @@ bool function ForceGift(entity player, array<string> args)
 		weaponId = "mp_weapon_peacekraber";
 		break;
 		default:
+			weaponId = args[0]
 			print("Weapon ID is " + weaponId)
 		break;
 	}
