@@ -218,6 +218,10 @@ bool function Gift(entity player, array<string> args)
 			{
 				print("Weapon ID is " + successfulweapons[0])
 				weaponId = successfulweapons[0]
+			} else if (successfulweapons.len() == 0)
+			{
+				print("Unable to detect weapon. Please try forcegift/fgift instead.")
+				return true;
 			}
 		break;
 	}

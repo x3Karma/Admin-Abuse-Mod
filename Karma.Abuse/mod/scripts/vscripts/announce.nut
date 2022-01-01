@@ -1,11 +1,32 @@
 global function AnnounceCommand
 global function Announce
 
+struct {
+    int red = 255
+    int green = 255
+    int blue = 0
+    array<string> colors
+} file
+
 void function AnnounceCommand() {
     #if SERVER
     AddClientCommandCallback("announce", AnnounceCMD);
     AddClientCommandCallback("a", AnnounceCMD);
+    UpdateAnnounceColor()
     #endif
+}
+
+void function UpdateAnnounceColor()
+{
+	string cvar = GetConVarString( "announce_color" )
+
+	file.colors = split( cvar, "," )
+	foreach ( string admin in file.colors )
+		StringReplace( admin, " ", "" )
+
+    file.red = file.colors[0].tointeger()
+    file.blue = file.colors[1].tointeger()
+    file.green = file.colors[2].tointeger()
 }
 
 bool function AnnounceCMD(entity player, array < string > args) {
@@ -69,7 +90,7 @@ bool function AnnounceCMD(entity player, array < string > args) {
         return true;
     }
 
-    string newString = playername + ": ";
+    string newString
 
     if (args.len() > 1) {
         array < string > playersname = args.slice(1);
@@ -85,9 +106,10 @@ bool function AnnounceCMD(entity player, array < string > args) {
 
 void function Announce(array < entity > player, string text) {
     #if SERVER
+    UpdateAnnounceColor()
     foreach(entity localPlayer in player)
 	{
-		SendHudMessage( localPlayer, text, -1, 0.4, 255, 255, 0, 0, 0.15, 4, 0.15 )
+		SendHudMessage( localPlayer, text, -1, 0.4, file.red, file.blue, file.green, 0, 0.15, 4, 0.15 )
     }
     #endif
 }
