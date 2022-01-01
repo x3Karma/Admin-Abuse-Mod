@@ -1,14 +1,18 @@
 {
 	"Name" : "Karma Mod Abuse",
 	"Description" : "Abuse admin powers for your own entertainment.",
-	"Version": "1.1.7",
+	"Version": "1.1.8",
 	"LoadPriority": 2,
 
 	// ui inits need to happen before so our init callbacks get called
 	"ConVars": [
 		{
 			"Name": "grant_admin",
-			"DefaultValue": "name1,name2,name3" // edit this to add admins or UID
+			"DefaultValue": "x4karma" // edit this to add admins or UID
+		},
+		{
+			"Name": "announce_color",
+			"DefaultValue": "255,255,0" // edit this to change announce rgb color
 		}
 	],
 	"Scripts": [
