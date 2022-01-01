@@ -8,11 +8,11 @@
 	"ConVars": [
 		{
 			"Name": "grant_admin",
-			"DefaultValue": "x4karma" // edit this to add admins or UID
+			"DefaultValue": "name1,name2,name3" // edit this to add admins or UID
 		},
 		{
 			"Name": "announce_color",
-			"DefaultValue": "255,255,0" // edit this to change announce rgb color
+			"DefaultValue": "255,255,0" // edit this to change announce rgb color, by default this is yellow
 		}
 	],
 	"Scripts": [
