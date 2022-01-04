@@ -18,7 +18,7 @@ void function PrintWeaponMods(entity weapon)
 	for( int i = 0; i < amods.len(); ++i )
 	{
 		string modId = amods[i]
-		print("[" + i.tostring() + "] " + modId); 
+		print("[" + i.tostring() + "] " + modId);
 	}
 	#endif
 }
@@ -36,7 +36,7 @@ bool function GiveWM(entity player, array<string> args)
 	#if SERVER
 	if (player == null)
 		return true;
-		
+
 	hadGift_Admin = false;
 	CheckAdmin(player);
 	if (hadGift_Admin != true && bypassPerms != true)
@@ -44,14 +44,13 @@ bool function GiveWM(entity player, array<string> args)
 		print("Admin permission not detected.");
 		return true;
 	}
-	wait 0.8;
 	entity weapon = player.GetActiveWeapon();
-		
-	if(weapon != null) 
+
+	if(weapon != null)
 	{
 		array<string> amods = GetWeaponMods_Global( weapon.GetWeaponClassName() );
 		string modId = "";
-		
+
 		if (args.len() == 0)
 		{
 			print("Give a valid mod.");
@@ -60,16 +59,16 @@ bool function GiveWM(entity player, array<string> args)
 			PrintWeaponMods(weapon);
 			return true;
 		}
-		
+
 		string newString = "";
-		
+
 		foreach (string newmodId in args)
 		{
-			try 
+			try
 			{
 				int a = newmodId.tointeger();
 				modId = amods[a];
-			} catch(exception2) 
+			} catch(exception2)
 			{
 				print("Error: Unknown ID, assuming its a modId");
 			}
@@ -93,10 +92,10 @@ void function GiveWeaponMod(entity player, string modId, entity weapon)
 		string weaponId = weapon.GetWeaponClassName();
 		bool removed = false;
 		array<string> mods = weapon.GetMods();
-		
+
 		// checks if the mods is already on the weapon
 		for( int i = 0; i < mods.len(); ++i )
-		{	
+		{
 			if( mods[i] == modId )
 			{
 				mods.remove( i );
@@ -105,7 +104,7 @@ void function GiveWeaponMod(entity player, string modId, entity weapon)
 			}
 		}
 		if( !removed )
-		{	
+		{
 			if (mods.len() < 5 || modId.find("burn_mod") != -1)
 				mods.append( modId ); // catch more than 4 mods
 			else if (mods.len() > 4) {
@@ -131,4 +130,4 @@ void function GiveWeaponMod(entity player, string modId, entity weapon)
 		}
 		player.SetActiveWeaponByName( weaponId );
 	#endif
-} 
+}

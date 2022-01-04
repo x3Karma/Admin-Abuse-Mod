@@ -1,8 +1,10 @@
 global function CheckPlayerName
 global function CheckWeaponName
+global function CheckWeaponMod
 
 global array<entity> successfulnames = [];
 global array<string> successfulweapons = [];
+global array<string> successfulmods = [];
 
 void function CheckPlayerName(string name)
 {
@@ -67,6 +69,23 @@ void function CheckWeaponName(string name)
             }
             print("Detected " + weaponname + "!")
             successfulweapons.append(weaponname)
+        }
+    }
+}
+
+void function CheckWeaponMod(string weaponId, array<string> mods)
+{
+    successfulmods = []
+    array<string> amods
+    amods = GetWeaponMods_Global( weaponId );
+    foreach (modname in mods)
+    {
+        foreach (mod in amods)
+        {
+            if (mod.tolower().find(modname.tolower()) != null)
+            {
+                successfulmods.append(mod)
+            }
         }
     }
 }

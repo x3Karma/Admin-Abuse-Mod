@@ -232,7 +232,7 @@ bool function Gift(entity player, array<string> args)
 		print("If you want to give yourself the weapon, put 0 as the playerId.");
 		return true;
 	}
-
+	array<entity> playerstogift
 	// if player typed "gift correctId somethinghere"
 	switch (args[1])
 	{
@@ -240,13 +240,7 @@ bool function Gift(entity player, array<string> args)
 			foreach (entity p in GetPlayerArray())
 			{
 				if (p != null)
-				CheckWeaponId(p, weaponId);
-
-				if (args.len() > 2) {
-					array<string> mods = args.slice(2);
-					bypassPerms = true;
-					thread GiveWM(p, mods);
-				}
+					playerstogift.append(p)
 			}
 		break;
 
@@ -254,13 +248,7 @@ bool function Gift(entity player, array<string> args)
 			foreach (entity p in GetPlayerArrayOfTeam( TEAM_IMC ))
 			{
 				if (p != null)
-					CheckWeaponId(p, weaponId)
-
-				if (args.len() > 2) {
-					array<string> mods = args.slice(2);
-					bypassPerms = true;
-					thread GiveWM(p, mods);
-				}
+					playerstogift.append(p)
 			}
 		break;
 
@@ -268,40 +256,34 @@ bool function Gift(entity player, array<string> args)
 			foreach (entity p in GetPlayerArrayOfTeam( TEAM_MILITIA ))
 			{
 				if (p != null)
-					CheckWeaponId(p, weaponId)
-
-				if (args.len() > 2) {
-					array<string> mods = args.slice(2);
-					bypassPerms = true;
-					thread GiveWM(p, mods);
-				}
+					playerstogift.append(p)
 			}
 		break;
 
 		default:
             CheckPlayerName(args[1])
 			 	foreach (entity p in successfulnames)
-                	CheckWeaponId(p, weaponId);
-
-			if (args.len() > 2) {
-				array<string> mods = args.slice(2);
-				bypassPerms = true;
-				CheckPlayerName(args[1])
-				foreach (entity p in successfulnames)
-					thread GiveWM(p, mods);
-			}
+                	playerstogift.append(p)
 		break;
 	}
+	array<string> mods
+	if (args.len() > 2)
+	{
+		mods = args.slice(2);
+	}
+	foreach(entity p in playerstogift)
+		CheckWeaponId(p, weaponId, mods)
 	#endif
 	return true;
 }
 
-void function KGiveWeapon( entity player, string weaponId )
+void function KGiveWeapon( entity player, string weaponId , array<string> mods = [])
 {
 	#if SERVER
 	array<entity> weapons = player.GetMainWeapons()
 	bool hasWeapon = false;
 	string weaponToSwitch = "";
+
 	if (player.GetLatestPrimaryWeapon() != null)
 	{
 		weaponToSwitch = player.GetLatestPrimaryWeapon().GetWeaponClassName();
@@ -329,9 +311,11 @@ void function KGiveWeapon( entity player, string weaponId )
 	}
 	if (hasWeapon || weaponToSwitch != "")
 		player.TakeWeaponNow( weaponToSwitch )
+
+	CheckWeaponMod(weaponId, mods)
 	try
 	{
-		player.GiveWeapon( weaponId )
+		player.GiveWeapon( weaponId , successfulmods )
 		player.SetActiveWeaponByName( weaponId )
 		string playername = player.GetPlayerName();
 		print("Giving " + playername + " the selected weapon.");
@@ -342,7 +326,7 @@ void function KGiveWeapon( entity player, string weaponId )
 #endif
 }
 
-void function KGiveGrenade(entity player, string abilityId )
+void function KGiveGrenade(entity player, string abilityId , array<string> mods = [])
 {
 #if SERVER
 	entity weapon = player.GetOffhandWeapon( OFFHAND_ORDNANCE );
@@ -351,7 +335,8 @@ void function KGiveGrenade(entity player, string abilityId )
 		if( weapon.GetWeaponClassName() != abilityId )
 		{
 			player.TakeWeaponNow( weapon.GetWeaponClassName() );
-			player.GiveOffhandWeapon( abilityId, OFFHAND_ORDNANCE );
+			CheckWeaponMod(weapon.GetWeaponClassName(), mods)
+			player.GiveOffhandWeapon( abilityId, OFFHAND_ORDNANCE , successfulmods );
 		}
 		else if( weapon.GetWeaponPrimaryClipCount() < weapon.GetWeaponPrimaryClipCountMax() )
 		{
@@ -363,31 +348,35 @@ void function KGiveGrenade(entity player, string abilityId )
 #endif
 }
 
-void function KGiveOffhandWeapon( entity player, string abilityId )
+void function KGiveOffhandWeapon( entity player, string abilityId , array<string> mods = [])
 {
 #if SERVER
 	entity weapon = player.GetOffhandWeapon( OFFHAND_MELEE );
 	if (weapon != null)
 		player.TakeWeaponNow( weapon.GetWeaponClassName() );
-	player.GiveOffhandWeapon( abilityId, OFFHAND_MELEE );
+
+	CheckWeaponMod(abilityId, mods)
+	player.GiveOffhandWeapon( abilityId, OFFHAND_MELEE , successfulmods );
 	string playername = player.GetPlayerName();
 	print("Giving " + playername + " the selected melee.");
 #endif
 }
 
-void function KGiveTitanDefensive( entity player, string abilityId )
+void function KGiveTitanDefensive( entity player, string abilityId , array<string> mods = [])
 {
 #if SERVER
 	entity weapon = player.GetOffhandWeapon( OFFHAND_SPECIAL );
 	if (weapon != null)
 		player.TakeWeaponNow( weapon.GetWeaponClassName() );
-	player.GiveOffhandWeapon( abilityId, OFFHAND_SPECIAL );
+
+	CheckWeaponMod(abilityId, mods)
+	player.GiveOffhandWeapon( abilityId, OFFHAND_SPECIAL , successfulmods );
 	string playername = player.GetPlayerName();
 	print("Giving " + playername + " the selected defensive.");
 #endif
 }
 
-void function KGiveTitanTactical( entity player, string abilityId )
+void function KGiveTitanTactical( entity player, string abilityId , array<string> mods = [])
 {
 #if SERVER
 	entity weapon = player.GetOffhandWeapon( OFFHAND_TITAN_CENTER );
@@ -397,7 +386,9 @@ void function KGiveTitanTactical( entity player, string abilityId )
 	}
 	if (weapon != null)
 		player.TakeWeaponNow( weapon.GetWeaponClassName() );
-	player.GiveOffhandWeapon( abilityId, OFFHAND_TITAN_CENTER );
+
+	CheckWeaponMod(abilityId, mods)
+	player.GiveOffhandWeapon( abilityId, OFFHAND_TITAN_CENTER , successfulmods );
 	string playername = player.GetPlayerName();
 	print("Giving " + playername + " the selected tactical.");
 #endif
@@ -428,26 +419,28 @@ void function KGiveCore( entity player, string abilityId )
 #endif
 }
 
-void function KGiveAbility( entity player, string abilityId )
+void function KGiveAbility( entity player, string abilityId , array<string> mods = [])
 {
 #if SERVER
 	entity weapon = player.GetOffhandWeapon( OFFHAND_SPECIAL );
 	if (weapon != null)
 		player.TakeWeaponNow( weapon.GetWeaponClassName() );
-	player.GiveOffhandWeapon( abilityId, OFFHAND_SPECIAL );
+
+	CheckWeaponMod(abilityId, mods)
+	player.GiveOffhandWeapon( abilityId, OFFHAND_SPECIAL , successfulmods );
 	string playername = player.GetPlayerName();
 	print("Giving " + playername + " the selected ability.");
 #endif
 }
 
-void function CheckWeaponId(entity player, string weaponId)
+void function CheckWeaponId(entity player, string weaponId, array<string> mods = [])
 {
 	#if SERVER
 	foreach (string p in kabilities)
 	{
 		if (weaponId == p)
 		{
-			KGiveAbility(player, weaponId);
+			KGiveAbility(player, weaponId, mods);
 			return;
 		}
 	}
@@ -456,7 +449,7 @@ void function CheckWeaponId(entity player, string weaponId)
 	{
 		if (weaponId == p)
 		{
-			KGiveGrenade(player, weaponId);
+			KGiveGrenade(player, weaponId, mods);
 			return;
 		}
 	}
@@ -465,7 +458,7 @@ void function CheckWeaponId(entity player, string weaponId)
 	{
 		if (weaponId == p)
 		{
-			KGiveTitanDefensive(player, weaponId);
+			KGiveTitanDefensive(player, weaponId, mods);
 			return;
 		}
 	}
@@ -474,7 +467,7 @@ void function CheckWeaponId(entity player, string weaponId)
 	{
 		if (weaponId == p)
 		{
-			KGiveTitanTactical(player, weaponId);
+			KGiveTitanTactical(player, weaponId, mods);
 			return;
 		}
 	}
@@ -492,12 +485,12 @@ void function CheckWeaponId(entity player, string weaponId)
 	{
 		if (weaponId == p)
 		{
-			KGiveOffhandWeapon(player, weaponId);
+			KGiveOffhandWeapon(player, weaponId, mods);
 			return;
 		}
 	}
 
-	KGiveWeapon(player, weaponId);
+	KGiveWeapon(player, weaponId , mods);
 	return;
 
 	#endif

@@ -96,7 +96,7 @@ void function Health(array < entity > player, int value) {
         {
 		    localPlayer.SetMaxHealth(value)
             localPlayer.SetHealth(value)
-		    print(localPlayer.GetPlayerName() + "'s health: " + localPlayer.GetHealth())
+		    printt(localPlayer.GetPlayerName() + "'s health: " + localPlayer.GetHealth())
         } else
         {
             int oldvalue = value
@@ -104,7 +104,7 @@ void function Health(array < entity > player, int value) {
                 value = 2500
             localPlayer.SetMaxHealth(value)
             localPlayer.SetHealth(oldvalue)
-		    print(localPlayer.GetPlayerName() + "'s titan health: " + localPlayer.GetHealth())
+		    printt(localPlayer.GetPlayerName() + "'s titan health: " + localPlayer.GetHealth())
         }
         }
     }
