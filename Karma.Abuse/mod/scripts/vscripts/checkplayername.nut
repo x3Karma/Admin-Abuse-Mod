@@ -60,14 +60,15 @@ void function CheckWeaponName(string name)
 
     foreach (string weaponname in weapons)
     {
-        if (weaponname.tolower().find(name.tolower()) != null)
+        if ( weaponname.tolower().find(name.tolower()) != null )
         {
-            if(weaponname.tolower() == name) {
+            if ( weaponname.tolower() == name ) {
                 print("Detected one " + weaponname + "!")
+                successfulweapons = [];
                 successfulweapons.append(weaponname)
                 return;
             }
-            print("Detected " + weaponname + "!")
+            print( "Detected " + weaponname + "!" )
             successfulweapons.append(weaponname)
         }
     }

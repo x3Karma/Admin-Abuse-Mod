@@ -92,6 +92,13 @@
 			},
 		},
 		{
+			"Path": "sonar.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "SonarCommand",
+			},
+		},
+		{
 			"Path": "bubbleshield.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {

@@ -73,6 +73,10 @@ bool function ForceGift(entity player, array<string> args)
 		case ("peacekraber"):
 		weaponId = "mp_weapon_peacekraber";
 		break;
+		case ("kraber"):
+		weaponId = "mp_weapon_sniper";
+		break;
+
 		default:
 			weaponId = args[0]
 			print("Weapon ID is " + weaponId)
@@ -201,6 +205,9 @@ bool function Gift(entity player, array<string> args)
 		break;
 		case ("peacekraber"):
 		weaponId = "mp_weapon_peacekraber";
+		break;
+		case ("kraber"):
+		weaponId = "mp_weapon_sniper";
 		break;
 		default:
 			CheckWeaponName(args[0])
