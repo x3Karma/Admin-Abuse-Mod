@@ -16,9 +16,16 @@ Want to bully anyone who joins your server? Look no further with this mod! Now y
 - unfreeze someone/team/all
 - hp/health someone/team/all to change max hp, 100 for base pilot, 2500 per bar for titans
 - announce someone/team/all <word1> <word2> <word3>
-- getteam omeone
+- getteam someone
 - shuffleteam/shuffleteams  theres a betterone somewhere
-- v/vanish omeone/IMC/militia/all
-- uv/unvanish omeone/IMC/militia/all
+- v/vanish someone/imc/militia/all
+- uv/unvanish someone/imc/militia/all
+- sonar someone/imc/militia/all <duration>
+- prop someone/imc/militia/all <duration> <modelpath>
+- unprop someone/imc/militia/all
+- getmod/gm/getmods <weaponId>
+- fgetmod/fgm/fgetmods <weaponId>
+- bubbleshield/bs someone/imc/militia/all <duration>
+- unbubbleshield/unbs someone/imc/militia/all
 
 so, yeah. enjoy your players malding probably
