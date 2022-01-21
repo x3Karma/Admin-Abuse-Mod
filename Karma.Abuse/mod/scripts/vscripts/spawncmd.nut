@@ -103,7 +103,7 @@ bool function rpwn(entity player, array<string> args)
 	if (args.len() == 0)
 	{
 		print("Give a valid argument.");
-		print("Example: rpwn/respawn <playername> <playername2> ... / imc / militia / all");
+		print("Example: rpwn/respawn <someone/imc/militia/all> [someone/spawn/nothing] [pilot/titan]");
 		// print every single player's name and their id
 		int i = 0;
 		foreach (entity p in GetPlayerArray())
@@ -116,14 +116,15 @@ bool function rpwn(entity player, array<string> args)
 	}
 
 	array<entity> players = GetPlayerArray();
-	entity player1
+	array<entity> player1 = []
+	entity player2 = null
 	switch (args[0])
 	{
 		case ("all"):
 			foreach (entity p in GetPlayerArray())
 			{
 				if (p != null)
-					player1 = p
+					player1.append(p)
 			}
 		break;
 
@@ -131,7 +132,7 @@ bool function rpwn(entity player, array<string> args)
 			foreach (entity p in GetPlayerArrayOfTeam( TEAM_IMC ))
 			{
 				if (p != null)
-					player1 = p
+					player1.append(p)
 			}
 		break;
 
@@ -139,64 +140,164 @@ bool function rpwn(entity player, array<string> args)
 			foreach (entity p in GetPlayerArrayOfTeam( TEAM_MILITIA ))
 			{
 				if (p != null)
-					player1 = p
+					player1.append(p)
 			}
 		break;
 
 		default:
             CheckPlayerName(args[0])
 				foreach (entity p in successfulnames)
-                    player1 = p
+                    player1.append(p)
 		break;
 	}
+	bool ISUSINGTITAN = false
+	bool ISSPAWN = false
 	if (args.len() > 1) {
 		switch (args[1])
 		{
 			case ("spawn"):
-				RespawnAtSpawn(player1)
-				return true;
+				ISSPAWN = true
 			break;
 
 			default:
             	CheckPlayerName(args[1])
 				foreach (entity p in successfulnames)
-                    Respawn(player1, p)
+                    player2 = p
 			break;
 		}
+
+		if (args.len() > 2)
+		{
+			switch(args[2])
+			{
+				case ("pilot"):
+					ISUSINGTITAN = false
+				break;
+				case ("titan"):
+					ISUSINGTITAN = true
+				break;
+				default:
+					ISUSINGTITAN = false
+				break;
+			}
+		}
 	}
-	else if (args.len() > 2)
+	if (args.len() > 3)
 	{
-		print("Too many arguments. rpwn someone/imc/militia/all <empty>/spawn/someone")
+		print("Too many arguments.")
+		print("Example: rpwn/respawn <someone/imc/militia/all> [someone/spawn/nothing] [pilot/titan]");
 		return true;
 	}
-	else
-		Respawn(player1)
-
+	foreach (sheep in player1)
+	{
+		if (!ISSPAWN)
+			Respawn(sheep, player2, ISUSINGTITAN)
+		else
+			RespawnAtSpawn(sheep, ISUSINGTITAN)
+	}
 #endif
 	return true;
 }
 
-void function Respawn(entity player, entity player2 = null)
+void function Respawn(entity player, entity player2 = null, bool ISUSINGTITAN = false)
 {
 #if SERVER
 	try
 	{
-		if (player2 == null)
-			player.RespawnPlayer(null);
-		else if (IsValid(player2))
-			player.RespawnPlayer(player2.GetOrigin())
-	} catch(e) {}
+		if (!ISUSINGTITAN)
+		{
+			if (player2 == null)
+				player.RespawnPlayer(null);
+			else if (IsValid(player2))
+			{
+				player.RespawnPlayer(null)
+				player.SetOrigin(player2.GetOrigin())
+			}
+		} else
+		{
+			if (!IsAlive(player))
+				thread CustomRespawnAsTitan(player, player2)
+		}
+	} catch(e) { print(e) }
 #endif
 }
 
-void function RespawnAtSpawn(entity player)
+void function CustomRespawnAsTitan(entity player, entity player2 = null)
+{
+	player.Signal( "PlayerRespawnStarted" )
+
+	player.isSpawning = true
+	entity spawnpoint
+	spawnpoint = FindSpawnPoint( player, true, false )
+	if (IsValid(player2) && player != null)
+	{
+		spawnpoint.SetOrigin(player2.GetOrigin())
+		spawnpoint.SetAngles(player2.GetAngles())
+	}
+
+ 	TitanLoadoutDef titanLoadout = GetTitanLoadoutForPlayer( player )
+
+	asset model = GetPlayerSettingsAssetForClassName( titanLoadout.setFile, "bodymodel" )
+	Attachment warpAttach = GetAttachmentAtTimeFromModel( model, "at_hotdrop_01", "offset", spawnpoint.GetOrigin(), spawnpoint.GetAngles(), 0 )
+	PlayFX( TURBO_WARP_FX, warpAttach.position, warpAttach.angle )
+
+	entity titan = CreateAutoTitanForPlayer_FromTitanLoadout( player, titanLoadout, spawnpoint.GetOrigin(), spawnpoint.GetAngles() )
+	DispatchSpawn( titan )
+	player.SetPetTitan( null ) // prevent embark prompt from showing up
+
+	AddCinematicFlag( player, CE_FLAG_CLASSIC_MP_SPAWNING ) // hide hud
+
+	// do titanfall scoreevent
+	AddPlayerScore( player, "Titanfall", player )
+
+	entity camera = CreateTitanDropCamera( spawnpoint.GetAngles(), < 90, titan.GetAngles().y, 0 > )
+	camera.SetParent( titan )
+
+	// calc offset for spawnpoint angle
+	// todo this seems bad but too lazy to figure it out rn
+	//vector xyOffset = RotateAroundOrigin2D( < 44, 0, 0 >, < 0, 0, 0>, spawnpoint.GetAngles().y )
+	//xyOffset.z = 520 // < 44, 0, 520 > at 0,0,0, seems to be the offset used in tf2
+	//print( xyOffset )
+
+	vector xyOffset = RotateAroundOrigin2D( < 44, 0, 520 >, < 0, 0, 0 >, spawnpoint.GetAngles().y )
+
+	camera.SetLocalOrigin( xyOffset )
+	camera.SetLocalAngles( < camera.GetAngles().x, spawnpoint.GetAngles().y, camera.GetAngles().z > ) // this straight up just does not work lol
+	camera.Fire( "Enable", "!activator", 0, player )
+
+	player.EndSignal( "OnDestroy" )
+	OnThreadEnd( function() : ( player, titan, camera )
+	{
+		if ( IsValid( player ) )
+		{
+			RemoveCinematicFlag( player, CE_FLAG_CLASSIC_MP_SPAWNING ) // show hud
+			player.isSpawning = false
+		}
+
+		titan.Destroy() // pilotbecomestitan leaves an npc titan that we need to delete
+		camera.Fire( "Disable", "!activator", 0, player )
+		camera.Destroy()
+	})
+
+	waitthread TitanHotDrop( titan, "at_hotdrop_01", spawnpoint.GetOrigin(), spawnpoint.GetAngles(), player, camera ) // do hotdrop anim
+
+	player.RespawnPlayer( null ) // spawn player as pilot so they get their pilot loadout on embark
+	player.SetOrigin( titan.GetOrigin() )
+
+	PilotBecomesTitan( player, titan )
+}
+
+void function RespawnAtSpawn(entity player, bool ISUSINGTITAN = false)
 {
 	#if SERVER
 	try
 	{
-		bool USINGTITAN = player.IsTitan()
-		player.RespawnPlayer(FindSpawnPoint(player, USINGTITAN, false))
-	} catch(e2) {}
+		if(!ISUSINGTITAN)
+			player.RespawnPlayer(FindSpawnPoint(player, ISUSINGTITAN, false))
+		else
+			if (!IsAlive(player))
+				thread CustomRespawnAsTitan(player, null)
+	} catch(e2) { print(e2) }
 	#endif
 }
 
