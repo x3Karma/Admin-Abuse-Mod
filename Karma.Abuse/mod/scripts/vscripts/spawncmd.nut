@@ -116,13 +116,14 @@ bool function rpwn(entity player, array<string> args)
 	}
 
 	array<entity> players = GetPlayerArray();
+	entity player1
 	switch (args[0])
 	{
 		case ("all"):
 			foreach (entity p in GetPlayerArray())
 			{
 				if (p != null)
-					Respawn(p)
+					player1 = p
 			}
 		break;
 
@@ -130,7 +131,7 @@ bool function rpwn(entity player, array<string> args)
 			foreach (entity p in GetPlayerArrayOfTeam( TEAM_IMC ))
 			{
 				if (p != null)
-					Respawn(p)
+					player1 = p
 			}
 		break;
 
@@ -138,37 +139,65 @@ bool function rpwn(entity player, array<string> args)
 			foreach (entity p in GetPlayerArrayOfTeam( TEAM_MILITIA ))
 			{
 				if (p != null)
-					Respawn(p)
+					player1 = p
 			}
 		break;
 
 		default:
             CheckPlayerName(args[0])
 				foreach (entity p in successfulnames)
-                    Respawn(p)
+                    player1 = p
 		break;
 	}
 	if (args.len() > 1) {
-		array<string> playersname = args.slice(1);
-		foreach (string playerId in playersname)
+		switch (args[1])
 		{
-            CheckPlayerName(playerId)
+			case ("spawn"):
+				RespawnAtSpawn(player1)
+				return true;
+			break;
+
+			default:
+            	CheckPlayerName(args[1])
 				foreach (entity p in successfulnames)
-                    Respawn(p)
+                    Respawn(player1, p)
+			break;
 		}
 	}
+	else if (args.len() > 2)
+	{
+		print("Too many arguments. rpwn someone/imc/militia/all <empty>/spawn/someone")
+		return true;
+	}
+	else
+		Respawn(player1)
 
 #endif
 	return true;
 }
 
-void function Respawn(entity player)
+void function Respawn(entity player, entity player2 = null)
 {
 #if SERVER
-	try {
-	player.RespawnPlayer(null);
+	try
+	{
+		if (player2 == null)
+			player.RespawnPlayer(null);
+		else if (IsValid(player2))
+			player.RespawnPlayer(player2.GetOrigin())
 	} catch(e) {}
 #endif
+}
+
+void function RespawnAtSpawn(entity player)
+{
+	#if SERVER
+	try
+	{
+		bool USINGTITAN = player.IsTitan()
+		player.RespawnPlayer(FindSpawnPoint(player, USINGTITAN, false))
+	} catch(e2) {}
+	#endif
 }
 
 bool function SpawnViper(entity player, array<string> args)
