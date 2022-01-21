@@ -6,6 +6,7 @@ struct {
     int green = 255
     int blue = 0
     array<string> colors
+    string automessage
 } file
 
 void function AnnounceCommand() {
@@ -13,6 +14,8 @@ void function AnnounceCommand() {
     AddClientCommandCallback("announce", AnnounceCMD);
     AddClientCommandCallback("a", AnnounceCMD);
     UpdateAnnounceColor()
+    UpdateAutoAnnounceColor()
+    AddCallback_GameStateEnter( eGameState.Playing, OnEnterPlaying )
     #endif
 }
 
@@ -27,6 +30,30 @@ void function UpdateAnnounceColor()
     file.red = file.colors[0].tointeger()
     file.blue = file.colors[1].tointeger()
     file.green = file.colors[2].tointeger()
+}
+
+void function UpdateAutoAnnounceColor()
+{
+	string cvar = GetConVarString( "autoannounce_color" )
+
+	file.colors = split( cvar, "," )
+	foreach ( string admin in file.colors )
+		StringReplace( admin, " ", "" )
+
+    file.red = file.colors[0].tointeger()
+    file.blue = file.colors[1].tointeger()
+    file.green = file.colors[2].tointeger()
+
+    file.automessage = GetConVarString("autoannounce")
+}
+
+void function OnEnterPlaying()
+{
+    UpdateAutoAnnounceColor()
+    foreach(entity player in GetPlayerArray())
+    {
+        SendHudMessage( player, file.automessage, -1, 0.4, file.red, file.blue, file.green, 0, 0.15, 4, 0.15 )
+    }
 }
 
 bool function AnnounceCMD(entity player, array < string > args) {

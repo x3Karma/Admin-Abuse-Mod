@@ -1,4 +1,4 @@
-global function Rearm
+global function RearmTest
 global function RearmCommand
 
 void function RearmCommand()
@@ -42,7 +42,7 @@ bool function RearmCMD(entity player, array<string> args)
 			foreach (entity p in GetPlayerArray())
 			{
 				if (p != null)
-					Rearm(p)
+					RearmTest(p)
 			}
 		break;
 
@@ -50,7 +50,7 @@ bool function RearmCMD(entity player, array<string> args)
 			foreach (entity p in GetPlayerArrayOfTeam( TEAM_IMC ))
 			{
 				if (p != null)
-					Rearm(p)
+					RearmTest(p)
 			}
 		break;
 
@@ -58,42 +58,63 @@ bool function RearmCMD(entity player, array<string> args)
 			foreach (entity p in GetPlayerArrayOfTeam( TEAM_MILITIA ))
 			{
 				if (p != null)
-					Rearm(p)
+					RearmTest(p)
 			}
 		break;
 
 		default:
-			if (CheckPlayerName(args[0]))
-				foreach (entity p in successfulnames)
-                    Rearm(p)
+			CheckPlayerName(args[0])
+			foreach (entity p in successfulnames)
+                    RearmTest(p)
 		break;
 	}
 	if (args.len() > 1) {
 		array<string> playersname = args.slice(1);
 		foreach (string playerId in playersname)
 		{
-            if (CheckPlayerName(playerId))
-				foreach (entity p in successfulnames)
-                    Rearm(p)
+            CheckPlayerName(playerId)
+			foreach (entity p in successfulnames)
+                RearmTest(p)
 		}
 	}
-
 	#endif
 	return true;
 }
 
-void function Rearm(entity player)
+void function RearmTest(entity player)
 {
-#if SERVER
-	entity weapon = null;
+	#if SERVER
+	entity weapon = null
 	try {
 		foreach (weapon in player.GetOffhandWeapons())
 		{
 			if (weapon == null)
-				break;
+				continue;
 			else
 			{
-				weapon.SetWeaponPrimaryClipCount( weapon.GetWeaponPrimaryClipCountMax() );
+				switch ( GetWeaponInfoFileKeyField_Global( weapon.GetWeaponClassName(), "cooldown_type" ) )
+				{
+					case "grapple":
+						player.SetSuitGrapplePower( 100.0 )
+					continue;
+
+					case "ammo":
+					case "ammo_instant":
+					case "ammo_deployed":
+					case "ammo_timed":
+						int maxAmmo = weapon.GetWeaponPrimaryClipCountMax()
+
+						weapon.SetWeaponPrimaryClipCount( maxAmmo )
+					continue;
+
+					case "chargeFrac":
+						weapon.SetWeaponChargeFraction( 100.0)
+					continue;
+
+					default:
+						printt( weapon.GetWeaponClassName() + " needs to be updated to support cooldown_type setting" )
+					continue;
+				}
 				if (player.IsTitan()) {
 					player.Server_SetDodgePower(100.0);
 					entity soul = player.GetTitanSoul();
@@ -104,6 +125,7 @@ void function Rearm(entity player)
 		}
 	} catch(e)
 	{
+		print(e)
 	}
-#endif
+	#endif
 }
