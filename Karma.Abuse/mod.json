@@ -4,7 +4,6 @@
 	"Version": "1.2.1",
 	"LoadPriority": 2,
 
-	// ui inits need to happen before so our init callbacks get called
 	"ConVars": [
 		{
 			"Name": "grant_admin",
@@ -13,6 +12,14 @@
 		{
 			"Name": "announce_color",
 			"DefaultValue": "255,255,0" // edit this to change announce rgb color
+		},
+		{
+			"Name": "autoannounce_color",
+			"DefaultValue": "255,255,0" // edit this to change autoannounce rgb color
+		},
+		{
+			"Name": "autoannounce",
+			"DefaultValue": "Enjoy your time on this server!" // edit this to change autoannounce, leave empty if desired.
 		}
 	],
 	"Scripts": [
