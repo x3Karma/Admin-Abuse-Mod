@@ -1,7 +1,7 @@
 {
 	"Name" : "Karma Mod Abuse",
 	"Description" : "Abuse admin powers for your own entertainment.",
-	"Version": "1.2.1",
+	"Version": "1.2.2",
 	"LoadPriority": 2,
 
 	"ConVars": [
