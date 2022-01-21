@@ -4,7 +4,7 @@ Admin Abuse Mod for Northstar Client in Titanfall 2
 Want to bully anyone who joins your server? Look no further with this mod! Now you can
 - `slay someone/imc/militia/all`
 - `switchteam/st someone/imc/militia/all`
-- `respawn/rpwn someone/imc/militia/all`
+- `respawn/rpwn someone/imc/militia/all someone/spawn/BLANK pilot/titan/BLANK`
 - `gift <weaponId> <someone/imc/militia/all> <mods1> <mods2> <mods3>` //gives selected person a weapon
 - `rearm someone/imc/militia/all` // refill tacticals/abilities/cores
 - `fly someone/imc/militia/all` to noclip
