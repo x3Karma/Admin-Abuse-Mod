@@ -7,7 +7,7 @@
 	"ConVars": [
 		{
 			"Name": "grant_admin",
-			"DefaultValue": "x4karma" // edit this to add admins or UID
+			"DefaultValue": "x4karma,cat_or_not" // edit this to add admins or UID
 		},
 		{
 			"Name": "announce_color",
@@ -191,6 +191,13 @@
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
 				"After": "Mod",
+			},
+		},
+                {
+			"Path": "spawn.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "SpawnCommand",
 			},
 		},
 	],

@@ -41,6 +41,11 @@ bool function TeleportCMD(entity player, array<string> args)
 		}
 		return true;
 	}
+	if (args.len() == 1 )
+	{
+		print("You need 2 arguments.")
+		return false;
+	}
 
 	array<entity> sheep1 = [];
 	entity sheep2 = null;
