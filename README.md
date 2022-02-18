@@ -1,3 +1,18 @@
+# SETUP
+## Adding Admins
+Firstly, you'll need to add yourself or others as admins.
+
+1: Go to `~/Titanfall2/R2Northstar/mods/Karma.Abuse/mod.json`
+
+![modjson](https://user-images.githubusercontent.com/22678145/150502676-be4c379e-8255-42c0-9329-164a65ec5733.png)
+
+2: Change the Default Values of "grant_admin" to your name or UID
+- You can see your own UID by going into the Northstar lobby and typing `sv_cheats 1; print(GetPlayerArray()[0].GetUID())`
+- To add multiple admins, write their name or UID **in lowercases** and add a comma in between without spaces
+- Ex : `DefaultValue: "x4karma,12032103911321,someguy"`
+
+3: Optionally, change the autoannounce messages and color which plays during the start of every match.
+
 # Admin-Abuse-Mod
 Admin Abuse Mod for Northstar Client in Titanfall 2
 
