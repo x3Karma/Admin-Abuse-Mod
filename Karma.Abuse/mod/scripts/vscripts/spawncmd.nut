@@ -3,6 +3,7 @@ untyped
 global function SpawnViper
 global function AddCommands
 global function SpawnTitan
+global function rpwn
 
 global function registerFunctions
 global function registerFunctionsAfter
@@ -224,6 +225,9 @@ void function Respawn(entity player, entity player2 = null, bool ISUSINGTITAN = 
 
 void function CustomRespawnAsTitan(entity player, entity player2 = null)
 {
+	while( player.IsWatchingKillReplay() )
+		WaitFrame()
+
 	player.Signal( "PlayerRespawnStarted" )
 
 	player.isSpawning = true
@@ -281,7 +285,7 @@ void function CustomRespawnAsTitan(entity player, entity player2 = null)
 
 	waitthread TitanHotDrop( titan, "at_hotdrop_01", spawnpoint.GetOrigin(), spawnpoint.GetAngles(), player, camera ) // do hotdrop anim
 
-	player.RespawnPlayer( null ) // spawn player as pilot so they get their pilot loadout on embark
+	try{player.RespawnPlayer( null )} catch(e1) {print(e1)} // spawn player as pilot so they get their pilot loadout on embark
 	player.SetOrigin( titan.GetOrigin() )
 
 	PilotBecomesTitan( player, titan )
@@ -316,7 +320,7 @@ bool function SpawnViper(entity player, array<string> args)
 	expect TitanLoadoutDef( loadout );
 	string baseClass = "npc_titan";
 	string aiSettings = GetNPCSettingsFileForTitanPlayerSetFile( loadout.setFile );
-
+	print(aiSettings)
 	entity player = GetPlayerByIndex( 0 );
 	vector origin = GetPlayerCrosshairOrigin( player );
 	vector angles = Vector( 0, 0, 0 );

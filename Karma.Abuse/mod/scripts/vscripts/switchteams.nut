@@ -2,6 +2,7 @@
 
 global function STCommand
 global function SwitchTeam
+global function SwitchTeamCMD
 
 void function STCommand()
 {

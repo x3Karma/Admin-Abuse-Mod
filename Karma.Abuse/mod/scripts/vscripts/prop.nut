@@ -1,5 +1,7 @@
 global function Prop
 global function PropCommand
+global function PropCMD
+global function UnPropCMD
 
 global array<asset> CurrentLevelSpawnList
 
@@ -77,7 +79,7 @@ bool function PropCMD(entity player, array<string> args)
     if (args.len() == 1 || args.len() == 2) {
         return true;
     }
-    
+
     float value = 1;
      if (args.len() > 1) {
         value = args[1].tofloat()
@@ -157,8 +159,8 @@ bool function UnPropCMD(entity player, array<string> args)
 		print("Only 1 arguments required.")
 		return true;
 	}
-    foreach (entity p in sheep1) 
-    {  
+    foreach (entity p in sheep1)
+    {
         if (p in file.shield)
         thread DestroyBubbleShield(file.shield[p])
     }

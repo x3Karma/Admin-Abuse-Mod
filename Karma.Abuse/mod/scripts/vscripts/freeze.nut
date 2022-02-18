@@ -1,5 +1,7 @@
 global function FreezeCommand
 global function Freeze
+global function FreezeCMD
+global function unFreezeCMD
 
 void function FreezeCommand() {
     #if SERVER

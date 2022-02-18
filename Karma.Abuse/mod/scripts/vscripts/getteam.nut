@@ -1,5 +1,6 @@
 global function getTeamCommand
 global function getTeam
+global function getTeamCMD
 
 void function getTeamCommand() {
     #if SERVER

@@ -1,5 +1,6 @@
 global function HealthCommand
 global function Health
+global function HealthCMD
 
 void function HealthCommand() {
     #if SERVER

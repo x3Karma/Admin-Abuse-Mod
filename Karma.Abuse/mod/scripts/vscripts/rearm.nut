@@ -1,5 +1,6 @@
 global function RearmTest
 global function RearmCommand
+global function RearmCMD
 
 void function RearmCommand()
 {

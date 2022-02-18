@@ -8,6 +8,8 @@ global function KGiveTitanDefensive
 global function KGiveTitanTactical
 global function KGiveCore
 global function CheckWeaponId
+global function Gift
+global function ForceGift
 
 // a lot of this is from Icepick's code so big props to them
 
@@ -387,10 +389,10 @@ void function KGiveTitanTactical( entity player, string abilityId , array<string
 {
 #if SERVER
 	entity weapon = player.GetOffhandWeapon( OFFHAND_TITAN_CENTER );
-	if (!player.IsTitan()) {
+	/* if (!player.IsTitan()) {
 		KGiveGrenade(player, abilityId);
 		return;
-	}
+	} */
 	if (weapon != null)
 		player.TakeWeaponNow( weapon.GetWeaponClassName() );
 

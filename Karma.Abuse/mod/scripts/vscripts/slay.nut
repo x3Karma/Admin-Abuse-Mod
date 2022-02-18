@@ -1,5 +1,6 @@
 global function Slay
 global function SlayCommand
+global function SlayCMD
 
 void function SlayCommand()
 {

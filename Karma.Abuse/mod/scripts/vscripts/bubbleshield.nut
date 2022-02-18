@@ -1,5 +1,7 @@
 global function BubbleShield
 global function BubbleShieldCommand
+global function BubbleShieldCMD
+global function UnBubbleShieldCMD
 
 struct {
     table<entity, entity> shield

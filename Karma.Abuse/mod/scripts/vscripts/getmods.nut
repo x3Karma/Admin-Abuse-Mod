@@ -1,5 +1,6 @@
 global function GetMod
 global function GetWM
+global function ForceGetWM
 
 void function GetMod()
 {

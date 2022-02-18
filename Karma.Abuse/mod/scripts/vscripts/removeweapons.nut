@@ -1,5 +1,6 @@
 global function RemoveWeaponsCommand
 global function RemoveWeapon
+global function RemoveWeaponsCMD
 
 void function RemoveWeaponsCommand()
 {

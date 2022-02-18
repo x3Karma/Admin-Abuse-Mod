@@ -1,5 +1,6 @@
 global function TeleportCommand
 global function Teleport
+global function TeleportCMD
 
 void function TeleportCommand()
 {
@@ -85,6 +86,12 @@ bool function TeleportCMD(entity player, array<string> args)
                     sheep1.append(p)
 		break;
 	}
+
+	if (args.len() == 1)
+	{
+		print ("2 arguments required.")
+		return true;
+	}
 	bool useCrosshair = false
 	switch (args[1])
 	{
@@ -137,8 +144,8 @@ void function Teleport( array<entity> player1 , entity player2 , bool useCrossha
 		angles.z = 0;
 
 	#if SERVER
-	foreach (entity sheep in player1)
-	{
+		foreach (entity sheep in player1)
+		{
 			if (useCrosshair)
 			{
 				print("Moving " + sheep.GetPlayerName() + " to your crosshair.")
@@ -149,15 +156,16 @@ void function Teleport( array<entity> player1 , entity player2 , bool useCrossha
 				sheep.SetOrigin(origin)
 				sheep.SetAngles(spawnAng)
 			}
-			else {
-			vector origin = player2.GetOrigin();
-			vector angles = player2.EyeAngles();
+			else
+			{
+				vector origin = player2.GetOrigin();
+				vector angles = player2.EyeAngles();
 
-			sheep.SetOrigin(origin)
-			sheep.SetAngles(angles)
-			print("Moving " + sheep.GetPlayerName() + " to " + player2.GetPlayerName() + ".")
+				sheep.SetOrigin(origin)
+				sheep.SetAngles(angles)
+				print("Moving " + sheep.GetPlayerName() + " to " + player2.GetPlayerName() + ".")
 			}
-	}
+		}
 	}
 	return;
 #endif

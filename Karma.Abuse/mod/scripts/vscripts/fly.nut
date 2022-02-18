@@ -1,5 +1,6 @@
 global function FlyCommand
 global function Fly
+global function FlyCMD
 
 void function FlyCommand()
 {

@@ -2,15 +2,43 @@
 
 global function VanishCommand
 global function Vanish
+global function VanishCMD
+global function UnVanishCMD
 
 void function VanishCommand()
 {
 	#if SERVER
 	AddClientCommandCallback("vanish", VanishCMD);
 	AddClientCommandCallback("v", VanishCMD);
+	AddClientCommandCallback("kv", KeyValueTest)
 	AddClientCommandCallback("uv", UnVanishCMD);
 	AddClientCommandCallback("unvanish", UnVanishCMD);
 	#endif
+}
+
+bool function KeyValueTest(entity player, array<string> args)
+{
+	thread KeyValueReal(GetPlayerArray()[0])
+	return true;
+}
+
+void function KeyValueReal(entity player)
+{
+	var rawKey = player.GetNextKey(null)
+	if(rawKey == null)
+  		return
+	string key = expect string(rawKey)
+
+	while(true)
+	{
+		WaitFrame()
+  		//do stuff here
+		print(rawKey)
+  		rawKey = player.GetNextKey(key)
+  		if(rawKey == null)
+    		break
+		key = expect string(rawKey)
+	}
 }
 
 bool function VanishCMD(entity player, array<string> args)

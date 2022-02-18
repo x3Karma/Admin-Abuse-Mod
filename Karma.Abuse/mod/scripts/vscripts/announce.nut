@@ -50,9 +50,12 @@ void function UpdateAutoAnnounceColor()
 void function OnEnterPlaying()
 {
     UpdateAutoAnnounceColor()
-    foreach(entity player in GetPlayerArray())
+    if (file.automessage.len() != 0)
     {
-        SendHudMessage( player, file.automessage, -1, 0.4, file.red, file.blue, file.green, 0, 0.15, 4, 0.15 )
+        foreach(entity player in GetPlayerArray())
+        {
+            SendHudMessage( player, file.automessage, -1, 0.4, file.red, file.blue, file.green, 0, 0.15, 4, 0.15 )
+        }
     }
 }
 

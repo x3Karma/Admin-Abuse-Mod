@@ -1,6 +1,7 @@
 global function Mod
 global function PrintWeaponMods
 global function GiveWM
+global function GiveWMWait
 global function GiveWeaponMod
 global bool bypassPerms = false;
 

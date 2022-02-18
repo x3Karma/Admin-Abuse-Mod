@@ -2,6 +2,7 @@ untyped
 
 global function PredatorCommand
 global function Predator
+global function PredatorCMD
 
 void function PredatorCommand()
 {
@@ -204,7 +205,7 @@ void function UnPredator(entity player)
 
 void function PredatorMain()
 {
-    while (true) {
+    while (files.Predators.len() > 0) {
         WaitFrame()
         if(!IsLobby())
         {

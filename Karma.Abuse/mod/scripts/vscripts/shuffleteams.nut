@@ -1,6 +1,7 @@
 untyped
 
 global function ShuffleTeamsCommand
+global function ShuffleTeamsCMD
 
 void function ShuffleTeamsCommand()
 {

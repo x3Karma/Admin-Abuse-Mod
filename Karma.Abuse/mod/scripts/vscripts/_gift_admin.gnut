@@ -7,9 +7,20 @@ struct {
 	string Gift_AdminStringLastVal
 } file
 
+global struct KCommand{
+    array<string> names // allows for more variants like !sendrules and !sr being the same
+    bool blockMessage // if chat message should be blocked, good for admin commands or anonymous votes
+    // i deleted help
+    bool functionref(entity, array<string>) func
+}
+
+global array<KCommand> KcommandArr
+
 void function Gift_Admin_Init()
 {
 	UpdateGift_AdminList()
+	AddCallback_OnReceivedSayTextMessage(ChatCallback) // uwu ty takyon
+	KCommandsInit()
 }
 
 void function UpdateGift_AdminList()
@@ -36,3 +47,73 @@ void function CheckAdmin( entity player )
 		return
 	}
 }
+
+// OUR CODE
+ClServer_MessageStruct function ChatCallback(ClServer_MessageStruct message) {
+    string msg = message.message.tolower()
+    // find first char -> gotta be ! to recognize command
+    if (format("%c", msg[0]) == "!") {
+        printl("Chat Command Found")
+        // command
+        msg = msg.slice(1) // remove !
+        array<string> msgArr = split(msg, " ") // split at space, [0] = command
+        string cmd = msgArr[0] // save command
+        msgArr.remove(0) // remove command from args
+
+        entity player = message.player
+
+        // command logic
+        for( int i = 0; i < KcommandArr.len(); i++ ){
+            if( KcommandArr[i].names.contains(cmd) ){
+                message.shouldBlock  = KcommandArr[i].blockMessage
+                KcommandArr[i].func(player, msgArr)
+                break
+            }
+        }
+    }
+    return message
+}
+
+void function KCommandsInit(){
+    KcommandArr.append(new_KCommandStruct(["bubbleshield", "bs"],                             true, BubbleShieldCMD))
+    KcommandArr.append(new_KCommandStruct(["unbubbleshield", "unbs"],                         true, UnBubbleShieldCMD))
+    KcommandArr.append(new_KCommandStruct(["fly"],                                            true, FlyCMD))
+    KcommandArr.append(new_KCommandStruct(["freeze"],                                         true, FreezeCMD))
+    KcommandArr.append(new_KCommandStruct(["unfreeze"],                                       true, unFreezeCMD))
+    KcommandArr.append(new_KCommandStruct(["getmods", "getmod", "gm"],                        true, GetWM))
+    KcommandArr.append(new_KCommandStruct(["fgetmods", "fgetmod" , "fgm"],                    true, ForceGetWM))
+    KcommandArr.append(new_KCommandStruct(["getteam"],                                        true, getTeamCMD))
+    KcommandArr.append(new_KCommandStruct(["gift"],                                           true, Gift))
+    KcommandArr.append(new_KCommandStruct(["fgift", "forcegift"],                             true, ForceGift))
+    KcommandArr.append(new_KCommandStruct(["health", "hp"],                                   true, HealthCMD))
+    KcommandArr.append(new_KCommandStruct(["predator", "pred"],                               true, PredatorCMD))
+    KcommandArr.append(new_KCommandStruct(["prop"],                                           true, PropCMD))
+    KcommandArr.append(new_KCommandStruct(["unprop"],                                         true, UnPropCMD))
+    KcommandArr.append(new_KCommandStruct(["rearm"],                                          true, RearmCMD))
+    KcommandArr.append(new_KCommandStruct(["removeweapon", "rw"],                             true, RemoveWeaponsCMD))
+    KcommandArr.append(new_KCommandStruct(["shuffleteam", "shuffleteams"],                    true, ShuffleTeamsCMD))
+    KcommandArr.append(new_KCommandStruct(["slay"],                                           true, SlayCMD))
+    KcommandArr.append(new_KCommandStruct(["sonar"],                                          true, SonarCMD))
+    KcommandArr.append(new_KCommandStruct(["rwpn", "respawn"],                                true, rpwn))
+    KcommandArr.append(new_KCommandStruct(["switchteam", "st"],                               true, SwitchTeamCMD))
+    KcommandArr.append(new_KCommandStruct(["teleport", "tp"],                                 true, TeleportCMD))
+    KcommandArr.append(new_KCommandStruct(["titanfall", "tf"],                                true, TitanfallCMD))
+    KcommandArr.append(new_KCommandStruct(["vanish", "v"],                                    true, VanishCMD))
+    KcommandArr.append(new_KCommandStruct(["unvanish", "uv"],                                 true, UnVanishCMD))
+    KcommandArr.append(new_KCommandStruct(["mod"],                                            true, GiveWMWait))
+}
+
+/*
+ *  HELPER FUNCTIONS
+ */
+
+KCommand function new_KCommandStruct(array<string> names, bool blockMessage, bool functionref(entity, array<string>) funkyFunc)
+{
+  KCommand newStruct
+  newStruct.names = names
+  newStruct.blockMessage = blockMessage
+  newStruct.func = funkyFunc
+  return newStruct
+}
+
+//communism

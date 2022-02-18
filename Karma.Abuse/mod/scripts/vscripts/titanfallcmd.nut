@@ -1,5 +1,6 @@
 global function Titanfall
 global function TitanfallCommand
+global function TitanfallCMD
 
 void function TitanfallCommand()
 {
