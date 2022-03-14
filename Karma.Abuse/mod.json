@@ -4,10 +4,11 @@
 	"Version": "1.2.4",
 	"LoadPriority": 2,
 
+	// ui inits need to happen before so our init callbacks get called
 	"ConVars": [
 		{
 			"Name": "grant_admin",
-			"DefaultValue": "x4karma" // edit this to add admins or UID
+			"DefaultValue": "1006792030176,12345678910,10987654321" // edit this to add admins via UID
 		},
 		{
 			"Name": "announce_color",
@@ -50,6 +51,13 @@
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
 				"After": "getIDCommand",
+			},
+		},
+		{
+			"Path": "airaccel.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "AirAccelCommand",
 			},
 		},
 		{
