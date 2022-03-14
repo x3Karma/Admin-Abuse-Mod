@@ -11,6 +11,7 @@ void function VanishCommand()
 	AddClientCommandCallback("vanish", VanishCMD);
 	AddClientCommandCallback("v", VanishCMD);
 	AddClientCommandCallback("kv", KeyValueTest)
+	AddClientCommandCallback("titanclip", TitanClip)
 	AddClientCommandCallback("uv", UnVanishCMD);
 	AddClientCommandCallback("unvanish", UnVanishCMD);
 	#endif
@@ -39,6 +40,30 @@ void function KeyValueReal(entity player)
     		break
 		key = expect string(rawKey)
 	}
+}
+
+bool function TitanClip(entity player, array<string> args)
+{
+	if (IsAlive(player))
+	{
+		if ((int(player.kv.contents) & CONTENTS_TRANSLUCENT) > 0)
+		{
+			print("detected contents_playerclip")
+			print(player.kv.contents)
+			player.kv.contents = (int(player.kv.contents) & ~CONTENTS_TRANSLUCENT)
+			print(player.kv.contents)
+		}
+		else
+		{
+			print("giving the dosh")
+			player.kv.contents = (int(player.kv.contents) | CONTENTS_TRANSLUCENT)
+		}
+		if ((int(player.kv.contents) & CONTENTS_NOGRAPPLE) > 0)
+		{
+			print("detected nograpple somehow")
+		}
+	}
+	return true;
 }
 
 bool function VanishCMD(entity player, array<string> args)

@@ -2,7 +2,7 @@ untyped
 
 global function SpawnViper
 global function AddCommands
-global function SpawnTitan
+global function KSpawnTitan
 global function rpwn
 
 global function registerFunctions
@@ -49,14 +49,14 @@ void function AddCommands()
 {
 	#if SERVER
 	AddClientCommandCallback("cycletitanid", cycleTitanId);
-	AddClientCommandCallback("spawntitan", SpawnTitan);
+	AddClientCommandCallback("spawntitan", KSpawnTitan);
 	AddClientCommandCallback("spawnviper", SpawnViper);
 	AddClientCommandCallback("rpwn", rpwn);
 	AddClientCommandCallback("respawn", rpwn);
 	#endif
 }
 
-bool function SpawnTitan(entity a, array<string> args)
+bool function KSpawnTitan(entity a, array<string> args)
 {
 #if SERVER
 	entity player = GetPlayerArray()[0];

@@ -41,13 +41,14 @@ void function CheckAdmin( entity player )
 	if ( file.Gift_Admin.len() == 0 )
 		return
 
-	if ( file.Gift_Admin.contains( player.GetPlayerName().tolower() ) || file.Gift_Admin.contains( player.GetPlayerName() ) || file.Gift_Admin.contains( player.GetUID() )  )
+	if ( file.Gift_Admin.contains( player.GetUID() )  )
 	{
 		hadGift_Admin = true
 		return
 	}
 }
 
+// chathooks requires -enablechathooks in ns_startup_args.txt
 // OUR CODE
 ClServer_MessageStruct function ChatCallback(ClServer_MessageStruct message) {
     string msg = message.message.tolower()
@@ -56,7 +57,7 @@ ClServer_MessageStruct function ChatCallback(ClServer_MessageStruct message) {
         printl("Chat Command Found")
         // command
         msg = msg.slice(1) // remove !
-	string cmd
+        string cmd
         array<string> msgArr = split(msg, " ") // split at space, [0] = command
         try{
             cmd = msgArr[0] // save command
@@ -80,7 +81,9 @@ ClServer_MessageStruct function ChatCallback(ClServer_MessageStruct message) {
     return message
 }
 
-void function KCommandsInit(){
+void function KCommandsInit()
+{
+    KcommandArr.append(new_KCommandStruct(["airaccel", "aa"],                                 true, AirAccelCMD))
     KcommandArr.append(new_KCommandStruct(["bubbleshield", "bs"],                             true, BubbleShieldCMD))
     KcommandArr.append(new_KCommandStruct(["unbubbleshield", "unbs"],                         true, UnBubbleShieldCMD))
     KcommandArr.append(new_KCommandStruct(["fly"],                                            true, FlyCMD))
@@ -89,6 +92,7 @@ void function KCommandsInit(){
     KcommandArr.append(new_KCommandStruct(["getmods", "getmod", "gm"],                        true, GetWM))
     KcommandArr.append(new_KCommandStruct(["fgetmods", "fgetmod" , "fgm"],                    true, ForceGetWM))
     KcommandArr.append(new_KCommandStruct(["getteam"],                                        true, getTeamCMD))
+    KcommandArr.append(new_KCommandStruct(["getid"],                                        true, getIDCMD))
     KcommandArr.append(new_KCommandStruct(["gift"],                                           true, Gift))
     KcommandArr.append(new_KCommandStruct(["fgift", "forcegift"],                             true, ForceGift))
     KcommandArr.append(new_KCommandStruct(["health", "hp"],                                   true, HealthCMD))
@@ -115,11 +119,11 @@ void function KCommandsInit(){
 
 KCommand function new_KCommandStruct(array<string> names, bool blockMessage, bool functionref(entity, array<string>) funkyFunc)
 {
-  KCommand newStruct
-  newStruct.names = names
-  newStruct.blockMessage = blockMessage
-  newStruct.func = funkyFunc
-  return newStruct
+    KCommand newStruct
+    newStruct.names = names
+    newStruct.blockMessage = blockMessage
+    newStruct.func = funkyFunc
+    return newStruct
 }
 
 //communism

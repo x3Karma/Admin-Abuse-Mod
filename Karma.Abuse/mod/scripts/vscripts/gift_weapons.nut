@@ -29,11 +29,10 @@ global array<string> defensives = ["mp_titanability_gun_shield"
 			 "mp_titanweapon_vortex_shield",
 			 "mp_titanweapon_heat_shield",
 			 "mp_titanweapon_stun_laser",
-			 "mp_titanability_tether_trap",
 			 "mp_titanability_basic_block",
 			 "mp_titanability_particle_wall",
 			 "mp_titanability_timeshift"
-			 "mp_ability_swordblock"];
+			 "mp_ability_swordblock"]; // "mp_titanability_tether_trap",
 
 global array<string> tacticals = ["mp_titanability_ammo_swap",
 			 "mp_titanability_slow_trap",

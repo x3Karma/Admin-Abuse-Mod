@@ -1,5 +1,6 @@
 global function getIDCommand
 global function getID
+global function getIDCMD
 
 void function getIDCommand() {
     #if SERVER
@@ -20,7 +21,7 @@ bool function getIDCMD(entity player, array < string > args) {
     // if player only typed "gift"
     if (args.len() == 0) {
         print("Give a valid argument.");
-        print("Example: getid <playername> , ideally I made it so it can autofill for you.");
+        print("Example: getid <playername>");
         // print every single player's name and their id
         int i = 0;
         foreach(entity p in GetPlayerArray()) {
@@ -79,7 +80,7 @@ void function getID(array < entity > player) {
     foreach(entity localPlayer in player)
 	{
         string playername = localPlayer.GetPlayerName()
-        print("[" + i.tostring() + "] " + playername);
+        print("[" + i.tostring() + "] " + playername + ", " + localPlayer.GetUID() );
         i++
     }
     #endif
