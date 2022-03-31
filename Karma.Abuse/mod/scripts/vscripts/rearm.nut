@@ -117,14 +117,15 @@ void function RearmTest(entity player)
 						printt( weapon.GetWeaponClassName() + " needs to be updated to support cooldown_type setting" )
 					continue;
 				}
-				if (player.IsTitan()) {
-					player.Server_SetDodgePower(100.0);
-					entity soul = player.GetTitanSoul();
-					SoulTitanCore_SetNextAvailableTime( soul, 100.0 );
-				}
-				Kprint( CMDsender, "Rearmed " + player.GetPlayerName() + "!")
 			}
 		}
+		if (player.IsTitan())
+		{
+			player.Server_SetDodgePower(100.0);
+			entity soul = player.GetTitanSoul();
+			SoulTitanCore_SetNextAvailableTime( soul, 100.0 );
+		}
+		Kprint( CMDsender, "Rearmed " + player.GetPlayerName() + "!")
 	} catch(e)
 	{
 		print( e )
