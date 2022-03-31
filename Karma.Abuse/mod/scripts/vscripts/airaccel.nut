@@ -9,7 +9,7 @@ void function AirAccelCommand()
 	#if SERVER
 	AddClientCommandCallback("airaccel", AirAccelCMD);
 	AddClientCommandCallback("aa", AirAccelCMD);
-    AddCallback_OnPlayerRespawned( ApplyAirAccel )
+	AddCallback_OnPlayerRespawned( ApplyAirAccel )
 	#endif
 }
 
@@ -23,21 +23,21 @@ bool function AirAccelCMD(entity player, array<string> args)
 	CheckAdmin(player);
 	if (hadGift_Admin != true)
 	{
-		print("Admin permission not detected.");
+		Chat_ServerPrivateMessage(player, Kprefix + "Admin permission not detected.", false);
 		return true;
 	}
 
 	// if player only typed "airaccel"
 	if (args.len() == 0)
 	{
-		print("Give a valid argument.");
-		print("Example: airaccel/aa <playername/imc/militia/all> <value> [save]");
+		Chat_ServerPrivateMessage(player, Kprefix + "Give a valid argument.", false);
+		Chat_ServerPrivateMessage(player, Kprefix + "Example: airaccel/aa <playername/imc/militia/all> <value> [save]", false);
 		// print every single player's name and their id
 		int i = 0;
 		foreach (entity p in GetPlayerArray())
 		{
 			string playername = p.GetPlayerName();
-			print("[" + i.tostring() + "] " + playername);
+			Chat_ServerPrivateMessage(player, "[" + i.tostring() + "] " + playername, false);
 			i++
 		}
 		return true;
@@ -88,12 +88,11 @@ bool function AirAccelCMD(entity player, array<string> args)
 		foreach (entity p in sheep1)
         	airaccel[p] <- value
 		AirAccel(sheep1, value)
-        return false;
     }
-
+	CMDsender = player
 	if (args.len() > 3)
 	{
-		print("airaccel/aa <playername> <value> [save]")
+		Chat_ServerPrivateMessage(player, Kprefix + "airaccel/aa <playername> <value> [save]", false)
 		return false;
 	}
 	#endif
@@ -103,11 +102,16 @@ bool function AirAccelCMD(entity player, array<string> args)
 void function AirAccel( array<entity> players, int value )
 {
 	#if SERVER
+	int successfulcount = 0
     foreach(entity player in players)
-	if ( IsAlive(player) && IsValid(player) )
 	{
-        player.kv.airAcceleration = value
-    }
+		if ( IsAlive(player) && IsValid(player) )
+		{
+        	player.kv.airAcceleration = value
+    	}
+		successfulcount++
+	}
+	Chat_ServerPrivateMessage(CMDsender, Kprefix + "Successfully modified " + successfulcount.tostring() + " players' air acceleration!", false)
 	#endif
 }
 

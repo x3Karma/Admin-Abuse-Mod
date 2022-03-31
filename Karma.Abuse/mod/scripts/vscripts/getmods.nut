@@ -24,13 +24,13 @@ bool function GetWM(entity player, array<string> args)
 	CheckAdmin(player);
 	if (hadGift_Admin != true)
 	{
-		print("Admin permission not detected.");
+		Kprint( player, "Admin permission not detected.");
 		return true;
 	}
 	string weaponId
 	if (args.len() == 0)
 	{
-		print("getmod/getmods/gm <weaponId>")
+		Kprint( player, "getmod/getmods/gm <weaponId>")
 		return true;
 	}
 	CheckWeaponName(args[0])
@@ -47,12 +47,12 @@ bool function GetWM(entity player, array<string> args)
 	}
 	else if (successfulweapons.len() == 1)
 	{
-		print("Weapon ID is " + successfulweapons[0])
+		Kprint( player, "Weapon ID is " + successfulweapons[0])
 		weaponId = successfulweapons[0]
 	}
 	else if (successfulweapons.len() == 0)
 	{
-		print("Unable to detect weapon.")
+		Kprint( player, "Unable to detect weapon.")
 		return true;
 	}
 
@@ -64,14 +64,14 @@ bool function GetWM(entity player, array<string> args)
 		for( int i = 0; i < amods.len(); ++i )
 		{
 			string modId = amods[i]
-			print("[" + i.tostring() + "] " + modId);
+			Kprint( player, "[" + i.tostring() + "] " + modId);
 		}
 		return true;
 	}
 
 	if (args.len() > 1)
 	{
-		print("Only 1 argument required.")
+		Kprint( player, "Only 1 argument required.")
 		return true;
 	}
 	return true;
@@ -88,22 +88,22 @@ bool function ForceGetWM(entity player, array<string> args)
 	CheckAdmin(player);
 	if (hadGift_Admin != true)
 	{
-		print("Admin permission not detected.");
+		Kprint( player, "Admin permission not detected.");
 		return true;
 	}
 
 	// if player only typed "fgift"
 	if (args.len() == 0)
 	{
-		print("Give a valid argument.");
-		print("Example: fgift/forcegift <weaponId> <playerId>");
-		print("You can check weaponId by typing give and pressing tab to scroll through the IDs.");
+		Kprint( player, "Give a valid argument.");
+		Kprint( player, "Example: fgift/forcegift <weaponId> <playerId>");
+		Kprint( player, "You can check weaponId by typing give and pressing tab to scroll through the IDs.");
 		// print every single player's name and their id
 		int i = 0;
 		foreach (entity p in GetPlayerArray())
 		{
 			string playername = p.GetPlayerName();
-			print("[" + i.tostring() + "] " + playername);
+			Kprint( player, "[" + i.tostring() + "] " + playername);
 			i++
 		}
 		return true;
@@ -111,7 +111,7 @@ bool function ForceGetWM(entity player, array<string> args)
 	// if player typed "fgift somethinghere"
 	switch (args[0]) {
 		case (""):
-		print("Give a valid argument.");
+		Kprint( player, "Give a valid argument.");
 		break;
 		case ("pd"):
 		weaponId = "mp_titanweapon_predator_cannon";
@@ -137,7 +137,7 @@ bool function ForceGetWM(entity player, array<string> args)
 
 		default:
 			weaponId = args[0]
-			print("Weapon ID is " + weaponId)
+			Kprint( player, "Weapon ID is " + weaponId)
 		break;
 	}
 
@@ -151,19 +151,19 @@ bool function ForceGetWM(entity player, array<string> args)
 			for( int i = 0; i < amods.len(); ++i )
 			{
 				string modId = amods[i]
-				print("[" + i.tostring() + "] " + modId);
+				Kprint( player, "[" + i.tostring() + "] " + modId);
 			}
 			return true;
 		} catch (exception)
 		{
-			print( "Couldn't fetch mods for " + weaponId + ". Are you sure its the correct ID?" );
+			Kprint( player,  "Couldn't fetch mods for " + weaponId + ". Are you sure its the correct ID?" );
 			return true;
 		}
 	}
 
 	if (args.len() > 1)
 	{
-		print("Only 1 argument required.")
+		Kprint( player, "Only 1 argument required.")
 		return true;
 	}
 	#endif

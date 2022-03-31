@@ -20,21 +20,21 @@ bool function SwitchTeamCMD(entity player, array<string> args)
 	CheckAdmin(player);
 	if (hadGift_Admin != true)
 	{
-		print("Admin permission not detected.");
+		Kprint( player, "Admin permission not detected.");
 		return true;
 	}
 
 	// if player only typed "gift"
 	if (args.len() == 0)
 	{
-		print("Give a valid argument.");
-		print("Example: switchteam/st <playerID> <playerID2> <playerID3> ... / all");
+		Kprint( player, "Give a valid argument.");
+		Kprint( player, "Example: switchteam/st <playerID> <playerID2> <playerID3> ... / all");
 		// print every single player's name and their id
 		int i = 0;
 		foreach (entity p in GetPlayerArray())
 		{
 			string playername = p.GetPlayerName();
-			print("[" + i.tostring() + "] " + playername);
+			Kprint( player, "[" + i.tostring() + "] " + playername);
 			i++
 		}
 		return true;
@@ -96,7 +96,7 @@ void function SwitchTeam(entity player)
 			SetTeam( player, TEAM_IMC )
 	} catch(e)
 	{
-		print("Unable to switch " + player.GetPlayerName() + "'s team. Could be unalive lol.")
+		Kprint( player, "Unable to switch " + player.GetPlayerName() + "'s team. Could be unalive lol.")
 	}
 #endif
 }

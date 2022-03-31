@@ -14,19 +14,19 @@ bool function getIDCMD(entity player, array < string > args) {
     hadGift_Admin = false;
     CheckAdmin(player);
     if (hadGift_Admin != true) {
-        print("Admin permission not detected.");
+        Kprint( player, "Admin permission not detected.");
         return true;
     }
 
     // if player only typed "gift"
     if (args.len() == 0) {
-        print("Give a valid argument.");
-        print("Example: getid <playername>");
+        Kprint( player, "Give a valid argument.");
+        Kprint( player, "Example: getid <playername>");
         // print every single player's name and their id
         int i = 0;
         foreach(entity p in GetPlayerArray()) {
             string playername = p.GetPlayerName();
-            print("[" + i.tostring() + "] " + playername);
+            Kprint( player, "[" + i.tostring() + "] " + playername);
             i++
         }
         return true;
@@ -65,10 +65,10 @@ bool function getIDCMD(entity player, array < string > args) {
 
     if (args.len() > 1 )
 	{
-		print("Only 1 argument required.")
+		Kprint( player, "Only 1 argument required.")
 		return true;
 	}
-
+    CMDsender = player
     thread getID(sheep1)
     #endif
     return true;
@@ -80,7 +80,7 @@ void function getID(array < entity > player) {
     foreach(entity localPlayer in player)
 	{
         string playername = localPlayer.GetPlayerName()
-        print("[" + i.tostring() + "] " + playername + ", " + localPlayer.GetUID() );
+        Kprint( CMDsender, "[" + i.tostring() + "] " + playername + ", " + localPlayer.GetUID() );
         i++
     }
     #endif

@@ -17,21 +17,21 @@ bool function RearmCMD(entity player, array<string> args)
 	CheckAdmin(player);
 	if (hadGift_Admin != true)
 	{
-		print("Admin permission not detected.");
+		Kprint( player, "Admin permission not detected.");
 		return true;
 	}
 
 	// if player only typed "rearm"
 	if (args.len() == 0)
 	{
-		print("Give a valid argument.");
-		print("Example: rearm <playerID> <playerID2> <playerID3> ... / imc / militia / all");
+		Kprint( player, "Give a valid argument.");
+		Kprint( player, "Example: rearm <playerID> <playerID2> <playerID3> ... / imc / militia / all");
 		// print every single player's name and their id
 		int i = 0;
 		foreach (entity p in GetPlayerArray())
 		{
 			string playername = p.GetPlayerName();
-			print("[" + i.tostring() + "] " + playername);
+			Kprint( player, "[" + i.tostring() + "] " + playername);
 			i++
 		}
 		return true;
@@ -78,6 +78,7 @@ bool function RearmCMD(entity player, array<string> args)
                 RearmTest(p)
 		}
 	}
+	CMDsender = player
 	#endif
 	return true;
 }
@@ -121,12 +122,12 @@ void function RearmTest(entity player)
 					entity soul = player.GetTitanSoul();
 					SoulTitanCore_SetNextAvailableTime( soul, 100.0 );
 				}
-				print("Rearmed " + player.GetPlayerName() + "!")
+				Kprint( CMDsender, "Rearmed " + player.GetPlayerName() + "!")
 			}
 		}
 	} catch(e)
 	{
-		print(e)
+		print( e )
 	}
 	#endif
 }

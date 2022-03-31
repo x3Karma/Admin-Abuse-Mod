@@ -20,24 +20,24 @@ bool function TeleportCMD(entity player, array<string> args)
 	CheckAdmin(player);
 	if (hadGift_Admin != true)
 	{
-		print("Admin permission not detected.");
+		Kprint( player, "Admin permission not detected.");
 		return true;
 	}
 
 	// if player only typed "gift"
 	if (args.len() == 0)
 	{
-		print("Give a valid argument.");
-		print("Example: teleport/tp <playerId1> <playerId2> / imc / militia / all / crosshair");
-		print("Example: teleport/tp all 0, teleports everyone to you")
-		print("Example: teleport/tp 4 crosshair, teleports 4 to your crosshair")
-		print("Example: teleport/tp 0 all, doesn't work since I can't teleport you to multiple people")
+		Kprint( player, "Give a valid argument.");
+		Kprint( player, "Example: teleport/tp <playerId1> <playerId2> / imc / militia / all / crosshair");
+		Kprint( player, "Example: teleport/tp all 0, teleports everyone to you")
+		Kprint( player, "Example: teleport/tp 4 crosshair, teleports 4 to your crosshair")
+		Kprint( player, "Example: teleport/tp 0 all, doesn't work since I can't teleport you to multiple people")
 		// print every single player's name and their id
 		int i = 0;
 		foreach (entity p in GetPlayerArray())
 		{
 			string playername = p.GetPlayerName();
-			print("[" + i.tostring() + "] " + playername);
+			Kprint( player, "[" + i.tostring() + "] " + playername);
 			i++
 		}
 		return true;
@@ -54,7 +54,7 @@ bool function TeleportCMD(entity player, array<string> args)
 			{
 				if (p != null) {
 					sheep1.append(p);
-					print("Added " + p.GetPlayerName());
+					Kprint( player, "Added " + p.GetPlayerName());
 				}
 			}
 		break;
@@ -76,7 +76,7 @@ bool function TeleportCMD(entity player, array<string> args)
 		break;
 
 		case ("crosshair"):
-			print("You're supposed to put crosshair in the second argument")
+			Kprint( player, "You're supposed to put crosshair in the second argument")
 			return true;
 		break;
 
@@ -96,18 +96,18 @@ bool function TeleportCMD(entity player, array<string> args)
 	switch (args[1])
 	{
 		case ("all"):
-			print("Bro you can't teleport everyone to teleport multiple people lmao.")
+			Kprint( player, "Bro you can't teleport everyone to teleport multiple people lmao.")
 			return true;
 		break;
 
 		case ("imc"):
-			print("Bro you can't teleport everyone to teleport multiple people lmao.")
+			Kprint( player, "Bro you can't teleport everyone to teleport multiple people lmao.")
 			return true;
 
 		break;
 
 		case ("militia"):
-			print("Bro you can't teleport everyone to teleport multiple people lmao.")
+			Kprint( player, "Bro you can't teleport everyone to teleport multiple people lmao.")
 			return true;
 
 		break;
@@ -125,10 +125,10 @@ bool function TeleportCMD(entity player, array<string> args)
 	}
 	if (args.len() > 2 )
 	{
-		print("Only 2 arguments required.")
+		Kprint( player, "Only 2 arguments required.")
 		return true;
 	}
-
+	CMDsender = player
 	Teleport(sheep1, sheep2, useCrosshair)
 	#endif
 	return true;
@@ -148,7 +148,7 @@ void function Teleport( array<entity> player1 , entity player2 , bool useCrossha
 		{
 			if (useCrosshair)
 			{
-				print("Moving " + sheep.GetPlayerName() + " to your crosshair.")
+				Kprint( CMDsender, "Moving " + sheep.GetPlayerName() + " to your crosshair.")
 
 				vector spawnPos = origin;
 				vector spawnAng = angles;
@@ -163,7 +163,7 @@ void function Teleport( array<entity> player1 , entity player2 , bool useCrossha
 
 				sheep.SetOrigin(origin)
 				sheep.SetAngles(angles)
-				print("Moving " + sheep.GetPlayerName() + " to " + player2.GetPlayerName() + ".")
+				Kprint( CMDsender, "Moving " + sheep.GetPlayerName() + " to " + player2.GetPlayerName() + ".")
 			}
 		}
 	}

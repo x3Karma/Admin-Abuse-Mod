@@ -20,22 +20,22 @@ bool function RemoveWeaponsCMD(entity player, array<string> args)
 	CheckAdmin(player);
 	if (hadGift_Admin != true)
 	{
-		print("Admin permission not detected.");
+		Kprint( player, "Admin permission not detected.");
 		return true;
 	}
 
 	// if player only typed "gift"
 	if (args.len() == 0)
 	{
-		print("Give a valid argument.");
-		print("Example: removeweapon/rw <playerId> <playerId2> ... / imc / militia / all");
-		print("This removes main weapons only lol");
+		Kprint( player, "Give a valid argument.");
+		Kprint( player, "Example: removeweapon/rw <playerId> <playerId2> ... / imc / militia / all");
+		Kprint( player, "This removes main weapons only lol");
 		// print every single player's name and their id
 		int i = 0;
 		foreach (entity p in GetPlayerArray())
 		{
 			string playername = p.GetPlayerName();
-			print("[" + i.tostring() + "] " + playername);
+			Kprint( player, "[" + i.tostring() + "] " + playername);
 			i++
 		}
 		return true;
@@ -99,10 +99,10 @@ void function RemoveWeapon( entity player )
 			try
 			{
 				player.TakeWeaponNow(weaponId)
-				print("Removed " + player.GetPlayerName() + "'s weapons!")
+				Kprint( player, "Removed " + player.GetPlayerName() + "'s weapons!")
 			} catch(exception)
 			{
-				print("Can't take " + player.GetPlayerName() + "'s " + weaponId + "!")
+				Kprint( player, "Can't take " + player.GetPlayerName() + "'s " + weaponId + "!")
 			}
 		}
 	}
@@ -118,7 +118,7 @@ void function RemoveWeapon( entity player )
 			player.TakeWeaponNow(weaponId)
 		} catch(exception)
 		{
-			print("Can't take " + player.GetPlayerName() + "'s " + weaponId + "!")
+			Kprint( player, "Can't take " + player.GetPlayerName() + "'s " + weaponId + "!")
 		}
 	}*/
 #endif

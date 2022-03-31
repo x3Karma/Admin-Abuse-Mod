@@ -85,7 +85,7 @@ bool function cycleTitanId(entity player, array<string> args)
 	TitanGroup = 0; }
 
 	#if SERVER
-	print(currentTitanId[TitanGroup]);
+	Kprint( player, currentTitanId[TitanGroup]);
 	#endif
 	return true;
 }
@@ -97,20 +97,20 @@ bool function rpwn(entity player, array<string> args)
 	CheckAdmin(player);
 	if (hadGift_Admin != true)
 	{
-		print("Admin permission not detected.");
+		Kprint( player, "Admin permission not detected.");
 		return true;
 	}
 	// if player only typed rpwn/respawn with no further arguments
 	if (args.len() == 0)
 	{
-		print("Give a valid argument.");
-		print("Example: rpwn/respawn <someone/imc/militia/all> [someone/spawn/nothing] [pilot/titan]");
+		Kprint( player, "Give a valid argument.");
+		Kprint( player, "Example: rpwn/respawn <someone/imc/militia/all> [someone/spawn/nothing] [pilot/titan]");
 		// print every single player's name and their id
 		int i = 0;
 		foreach (entity p in GetPlayerArray())
 		{
 			string playername = p.GetPlayerName();
-			print("[" + i.tostring() + "] " + playername);
+			Kprint( player, "[" + i.tostring() + "] " + playername);
 			i++
 		}
 		return true;
@@ -185,8 +185,8 @@ bool function rpwn(entity player, array<string> args)
 	}
 	if (args.len() > 3)
 	{
-		print("Too many arguments.")
-		print("Example: rpwn/respawn <someone/imc/militia/all> [someone/spawn/nothing] [pilot/titan]");
+		Kprint( player, "Too many arguments.")
+		Kprint( player, "Example: rpwn/respawn <someone/imc/militia/all> [someone/spawn/nothing] [pilot/titan]");
 		return true;
 	}
 	foreach (sheep in player1)
@@ -261,7 +261,7 @@ void function CustomRespawnAsTitan(entity player, entity player2 = null)
 	// todo this seems bad but too lazy to figure it out rn
 	//vector xyOffset = RotateAroundOrigin2D( < 44, 0, 0 >, < 0, 0, 0>, spawnpoint.GetAngles().y )
 	//xyOffset.z = 520 // < 44, 0, 520 > at 0,0,0, seems to be the offset used in tf2
-	//print( xyOffset )
+	//Kprint( player,  xyOffset )
 
 	vector xyOffset = RotateAroundOrigin2D( < 44, 0, 520 >, < 0, 0, 0 >, spawnpoint.GetAngles().y )
 
@@ -320,7 +320,7 @@ bool function SpawnViper(entity player, array<string> args)
 	expect TitanLoadoutDef( loadout );
 	string baseClass = "npc_titan";
 	string aiSettings = GetNPCSettingsFileForTitanPlayerSetFile( loadout.setFile );
-	print(aiSettings)
+	Kprint( player, aiSettings)
 	entity player = GetPlayerByIndex( 0 );
 	vector origin = GetPlayerCrosshairOrigin( player );
 	vector angles = Vector( 0, 0, 0 );

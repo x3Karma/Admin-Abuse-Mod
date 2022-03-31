@@ -26,19 +26,19 @@ bool function PropCMD(entity player, array<string> args)
 	CheckAdmin(player);
 	if (hadGift_Admin != true)
 	{
-		print("Admin permission not detected.");
+		Kprint( player, "Admin permission not detected.");
 		return true;
 	}
 
 	// if player only typed "gift"
 	if (args.len() == 0) {
-        print("Give a valid argument.");
-        print("Example: prop <playerId> <duration> , playerId = imc / militia / all");
+        Kprint( player, "Give a valid argument.");
+        Kprint( player, "Example: prop <playerId> <duration> , playerId = imc / militia / all");
         // print every single player's name and their id
         int i = 0;
         foreach(entity p in GetPlayerArray()) {
             string playername = p.GetPlayerName();
-            print("[" + i.tostring() + "] " + playername);
+            Kprint( player, "[" + i.tostring() + "] " + playername);
             i++
         }
         return true;
@@ -86,7 +86,7 @@ bool function PropCMD(entity player, array<string> args)
     }
     if (args.len() > 3 )
 	{
-		print("Only 3 arguments required.")
+		Kprint( player, "Only 3 arguments required.")
 		return true;
 	}
 
@@ -105,19 +105,19 @@ bool function UnPropCMD(entity player, array<string> args)
 	CheckAdmin(player);
 	if (hadGift_Admin != true)
 	{
-		print("Admin permission not detected.");
+		Kprint( player, "Admin permission not detected.");
 		return true;
 	}
 
 	// if player only typed "gift"
 	if (args.len() == 0) {
-        print("Give a valid argument.");
-        print("Example: prop <playerId> <duration> , playerId = imc / militia / all");
+        Kprint( player, "Give a valid argument.");
+        Kprint( player, "Example: prop <playerId> <duration> , playerId = imc / militia / all");
         // print every single player's name and their id
         int i = 0;
         foreach(entity p in GetPlayerArray()) {
             string playername = p.GetPlayerName();
-            print("[" + i.tostring() + "] " + playername);
+            Kprint( player, "[" + i.tostring() + "] " + playername);
             i++
         }
         return true;
@@ -156,7 +156,7 @@ bool function UnPropCMD(entity player, array<string> args)
 
     if (args.len() > 1 )
 	{
-		print("Only 1 arguments required.")
+		Kprint( player, "Only 1 arguments required.")
 		return true;
 	}
     foreach (entity p in sheep1)

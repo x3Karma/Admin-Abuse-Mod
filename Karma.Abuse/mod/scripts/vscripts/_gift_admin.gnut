@@ -1,6 +1,9 @@
 global function Gift_Admin_Init
 global function CheckAdmin
 global bool hadGift_Admin = false;
+global string Kprefix = "[\x1b[31mKarma.Abuse\x1b[0m] "
+global entity CMDsender
+global function Kprint
 
 struct {
 	array<string> Gift_Admin
@@ -48,6 +51,11 @@ void function CheckAdmin( entity player )
 	}
 }
 
+void function Kprint(entity player, string str)
+{
+    Chat_ServerPrivateMessage( player, Kprefix + str, false )
+}
+
 // chathooks requires -enablechathooks in ns_startup_args.txt
 // OUR CODE
 ClServer_MessageStruct function ChatCallback(ClServer_MessageStruct message) {
@@ -92,7 +100,7 @@ void function KCommandsInit()
     KcommandArr.append(new_KCommandStruct(["getmods", "getmod", "gm"],                        true, GetWM))
     KcommandArr.append(new_KCommandStruct(["fgetmods", "fgetmod" , "fgm"],                    true, ForceGetWM))
     KcommandArr.append(new_KCommandStruct(["getteam"],                                        true, getTeamCMD))
-    KcommandArr.append(new_KCommandStruct(["getid"],                                        true, getIDCMD))
+    KcommandArr.append(new_KCommandStruct(["getid"],                                          true, getIDCMD))
     KcommandArr.append(new_KCommandStruct(["gift"],                                           true, Gift))
     KcommandArr.append(new_KCommandStruct(["fgift", "forcegift"],                             true, ForceGift))
     KcommandArr.append(new_KCommandStruct(["health", "hp"],                                   true, HealthCMD))

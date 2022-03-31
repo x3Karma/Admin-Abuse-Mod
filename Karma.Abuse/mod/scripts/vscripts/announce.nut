@@ -65,19 +65,19 @@ bool function AnnounceCMD(entity player, array < string > args) {
     hadGift_Admin = false;
     CheckAdmin(player);
     if (hadGift_Admin != true) {
-        print("Admin permission not detected.");
+        Kprint( player, "Admin permission not detected.");
         return true;
     }
 
     // if player only typed "gift"
     if (args.len() == 0) {
-        print("Give a valid argument.");
-        print("Example: announce/a <playerId> <text1> <text2> ... / imc / militia / all");
+        Kprint( player, "Give a valid argument.");
+        Kprint( player, "Example: announce/a <playerId> <text1> <text2> ... / imc / militia / all");
         // print every single player's name and their id
         int i = 0;
         foreach(entity p in GetPlayerArray()) {
             string playername = p.GetPlayerName();
-            print("[" + i.tostring() + "] " + playername);
+            Kprint( player, "[" + i.tostring() + "] " + playername);
             i++
         }
         return true;
@@ -116,7 +116,7 @@ bool function AnnounceCMD(entity player, array < string > args) {
 
     // if player typed "gift correctId" with no further arguments
     if (args.len() == 1) {
-        print("Example: announce/a <playerId> <text>");
+        Kprint( player, "Example: announce/a <playerId> <text>");
         return true;
     }
 

@@ -10,60 +10,9 @@ void function VanishCommand()
 	#if SERVER
 	AddClientCommandCallback("vanish", VanishCMD);
 	AddClientCommandCallback("v", VanishCMD);
-	AddClientCommandCallback("kv", KeyValueTest)
-	AddClientCommandCallback("titanclip", TitanClip)
 	AddClientCommandCallback("uv", UnVanishCMD);
 	AddClientCommandCallback("unvanish", UnVanishCMD);
 	#endif
-}
-
-bool function KeyValueTest(entity player, array<string> args)
-{
-	thread KeyValueReal(GetPlayerArray()[0])
-	return true;
-}
-
-void function KeyValueReal(entity player)
-{
-	var rawKey = player.GetNextKey(null)
-	if(rawKey == null)
-  		return
-	string key = expect string(rawKey)
-
-	while(true)
-	{
-		WaitFrame()
-  		//do stuff here
-		print(rawKey)
-  		rawKey = player.GetNextKey(key)
-  		if(rawKey == null)
-    		break
-		key = expect string(rawKey)
-	}
-}
-
-bool function TitanClip(entity player, array<string> args)
-{
-	if (IsAlive(player))
-	{
-		if ((int(player.kv.contents) & CONTENTS_TRANSLUCENT) > 0)
-		{
-			print("detected contents_playerclip")
-			print(player.kv.contents)
-			player.kv.contents = (int(player.kv.contents) & ~CONTENTS_TRANSLUCENT)
-			print(player.kv.contents)
-		}
-		else
-		{
-			print("giving the dosh")
-			player.kv.contents = (int(player.kv.contents) | CONTENTS_TRANSLUCENT)
-		}
-		if ((int(player.kv.contents) & CONTENTS_NOGRAPPLE) > 0)
-		{
-			print("detected nograpple somehow")
-		}
-	}
-	return true;
 }
 
 bool function VanishCMD(entity player, array<string> args)
@@ -74,21 +23,21 @@ bool function VanishCMD(entity player, array<string> args)
 	CheckAdmin(player);
 	if (hadGift_Admin != true)
 	{
-		print("Admin permission not detected.");
+		Kprint( player, "Admin permission not detected.");
 		return true;
 	}
 
 	// if player only typed "gift"
 	if (args.len() == 0)
 	{
-		print("Give a valid argument.");
-		print("Example: vanish/v <playername> <playername2> <playername3> ... / imc / militia / all");
+		Kprint( player, "Give a valid argument.");
+		Kprint( player, "Example: vanish/v <playername> <playername2> <playername3> ... / imc / militia / all");
 		// print every single player's name and their id
 		int i = 0;
 		foreach (entity p in GetPlayerArray())
 		{
 			string playername = p.GetPlayerName();
-			print("[" + i.tostring() + "] " + playername);
+			Kprint( player, "[" + i.tostring() + "] " + playername);
 			i++
 		}
 		return true;
@@ -148,7 +97,7 @@ void function Vanish(entity player)
 		return;
 	} catch(e)
 	{
-		print("Unable to vanish " + player.GetPlayerName() + ". Could be unalive lol.")
+		print( "Unable to vanish " + player.GetPlayerName() + ". Could be unalive lol." )
 	}
 #endif
 }
@@ -161,21 +110,21 @@ bool function UnVanishCMD(entity player, array<string> args)
 	CheckAdmin(player);
 	if (hadGift_Admin != true)
 	{
-		print("Admin permission not detected.");
+		Kprint( player, "Admin permission not detected.");
 		return true;
 	}
 
 	// if player only typed "gift"
 	if (args.len() == 0)
 	{
-		print("Give a valid argument.");
-		print("Example: unvanish/uv <playername> <playername2> <playername3> ... / imc / militia / all");
+		Kprint( player, "Give a valid argument.");
+		Kprint( player, "Example: unvanish/uv <playername> <playername2> <playername3> ... / imc / militia / all");
 		// print every single player's name and their id
 		int i = 0;
 		foreach (entity p in GetPlayerArray())
 		{
 			string playername = p.GetPlayerName();
-			print("[" + i.tostring() + "] " + playername);
+			Kprint( player, "[" + i.tostring() + "] " + playername);
 			i++
 		}
 		return true;
@@ -235,7 +184,7 @@ void function UnVanish(entity player)
 		return;
 	} catch(e)
 	{
-		print("Unable to unvanish " + player.GetPlayerName() + ". Could be unalive lol.")
+		print( "Unable to unvanish " + player.GetPlayerName() + ". Could be unalive lol.")
 	}
 #endif
 }

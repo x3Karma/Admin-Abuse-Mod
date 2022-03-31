@@ -21,7 +21,7 @@ bool function ShuffleTeamsCMD(entity player, array<string> args)
 	CheckAdmin(player);
 	if (hadGift_Admin != true)
 	{
-		print("Admin permission not detected.");
+		Kprint( player, "Admin permission not detected.");
 		return true;
 	}
 
@@ -43,7 +43,7 @@ bool function ShuffleTeamsCMD(entity player, array<string> args)
 	}
 
     if (args.len () > 0)
-        print("No argument required.")
+        Kprint( player, "No argument required.")
 	#endif
 	return true;
 }

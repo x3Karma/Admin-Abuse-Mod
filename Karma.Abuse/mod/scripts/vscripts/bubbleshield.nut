@@ -25,19 +25,19 @@ bool function BubbleShieldCMD(entity player, array<string> args)
 	CheckAdmin(player);
 	if (hadGift_Admin != true)
 	{
-		print("Admin permission not detected.");
+		Kprint( player, "Admin permission not detected.");
 		return true;
 	}
 
 	// if player only typed "gift"
 	if (args.len() == 0) {
-        print("Give a valid argument.");
-        print("Example: bs/bubbleshield <playerId> <duration> , playerId = imc / militia / all");
+        Kprint( player, "Give a valid argument.");
+        Kprint( player, "Example: bs/bubbleshield <playerId> <duration> , playerId = imc / militia / all");
         // print every single player's name and their id
         int i = 0;
         foreach(entity p in GetPlayerArray()) {
             string playername = p.GetPlayerName();
-            print("[" + i.tostring() + "] " + playername);
+            Kprint( player, "[" + i.tostring() + "] " + playername);
             i++
         }
         return true;
@@ -85,7 +85,7 @@ bool function BubbleShieldCMD(entity player, array<string> args)
 
     if (args.len() > 2 )
 	{
-		print("Only 2 arguments required.")
+		Kprint( player, "Only 2 arguments required.")
 		return true;
 	}
     foreach (entity p in sheep1)
@@ -103,19 +103,19 @@ bool function UnBubbleShieldCMD(entity player, array<string> args)
 	CheckAdmin(player);
 	if (hadGift_Admin != true)
 	{
-		print("Admin permission not detected.");
+		Kprint( player, "Admin permission not detected.");
 		return true;
 	}
 
 	// if player only typed "gift"
 	if (args.len() == 0) {
-        print("Give a valid argument.");
-        print("Example: bs/bubbleshield <playerId> <duration> , playerId = imc / militia / all");
+        Kprint( player, "Give a valid argument.");
+        Kprint( player, "Example: bs/bubbleshield <playerId> <duration> , playerId = imc / militia / all");
         // print every single player's name and their id
         int i = 0;
         foreach(entity p in GetPlayerArray()) {
             string playername = p.GetPlayerName();
-            print("[" + i.tostring() + "] " + playername);
+            Kprint( player, "[" + i.tostring() + "] " + playername);
             i++
         }
         return true;
@@ -154,11 +154,11 @@ bool function UnBubbleShieldCMD(entity player, array<string> args)
 
     if (args.len() > 1 )
 	{
-		print("Only 1 arguments required.")
+		Kprint( player, "Only 1 arguments required.")
 		return true;
 	}
-    foreach (entity p in sheep1) 
-    {  
+    foreach (entity p in sheep1)
+    {
         if (p in file.shield)
         thread DestroyBubbleShield(file.shield[p])
     }

@@ -17,21 +17,21 @@ bool function SlayCMD(entity player, array<string> args)
 	CheckAdmin(player);
 	if (hadGift_Admin != true)
 	{
-		print("Admin permission not detected.");
+		Kprint( player, "Admin permission not detected.");
 		return true;
 	}
 
 	// if player only typed "gift"
 	if (args.len() == 0)
 	{
-		print("Give a valid argument.");
-		print("Example: slay <playerID> <playerID2> <playerID3> ... / imc / militia / all");
+		Kprint( player, "Give a valid argument.");
+		Kprint( player, "Example: slay <playerID> <playerID2> <playerID3> ... / imc / militia / all");
 		// print every single player's name and their id
 		int i = 0;
 		foreach (entity p in GetPlayerArray())
 		{
 			string playername = p.GetPlayerName();
-			print("[" + i.tostring() + "] " + playername);
+			Kprint( player, "[" + i.tostring() + "] " + playername);
 			i++
 		}
 		return true;
@@ -91,11 +91,11 @@ void function Slay(entity player)
 		if ( IsAlive( player ) )
 		{
 			player.Die()
-			print("Slayed " + player.GetPlayerName() + "!")
+			Kprint( player, "Slayed " + player.GetPlayerName() + "!")
 		}
 	} catch(e)
 	{
-		print("Unable to slay " + player.GetPlayerName() + ". Could be unalive lol.")
+		Kprint( player, "Unable to slay " + player.GetPlayerName() + ". Could be unalive lol.")
 	}
 #endif
 }

@@ -32,22 +32,22 @@ bool function ForceGift(entity player, array<string> args)
 	CheckAdmin(player);
 	if (hadGift_Admin != true)
 	{
-		print("Admin permission not detected.");
+		Kprint( player, "Admin permission not detected.");
 		return true;
 	}
 
 	// if player only typed "fgift"
 	if (args.len() == 0)
 	{
-		print("Give a valid argument.");
-		print("Example: fgift/forcegift <weaponId> <playerId>");
-		print("You can check weaponId by typing give and pressing tab to scroll through the IDs.");
+		Kprint( player, "Give a valid argument.");
+		Kprint( player, "Example: fgift/forcegift <weaponId> <playerId>");
+		Kprint( player, "You can check weaponId by typing give and pressing tab to scroll through the IDs.");
 		// print every single player's name and their id
 		int i = 0;
 		foreach (entity p in GetPlayerArray())
 		{
 			string playername = p.GetPlayerName();
-			print("[" + i.tostring() + "] " + playername);
+			Kprint( player, "[" + i.tostring() + "] " + playername);
 			i++
 		}
 		return true;
@@ -55,7 +55,7 @@ bool function ForceGift(entity player, array<string> args)
 	// if player typed "fgift somethinghere"
 	switch (args[0]) {
 		case (""):
-		print("Give a valid argument.");
+		Kprint( player, "Give a valid argument.");
 		break;
 		case ("pd"):
 		weaponId = "mp_titanweapon_predator_cannon";
@@ -81,14 +81,14 @@ bool function ForceGift(entity player, array<string> args)
 
 		default:
 			weaponId = args[0]
-			print("Weapon ID is " + weaponId)
+			Kprint( player, "Weapon ID is " + weaponId)
 		break;
 	}
 	// if player typed "gift correctId" with no further arguments
 	if (args.len() == 1)
 	{
-		print("Example: gift <weaponId> <playerId> <mod>");
-		print("If you want to give yourself the weapon, put 0 as the playerId.");
+		Kprint( player, "Example: gift <weaponId> <playerId> <mod>");
+		Kprint( player, "If you want to give yourself the weapon, put 0 as the playerId.");
 		return true;
 	}
 
@@ -165,22 +165,22 @@ bool function Gift(entity player, array<string> args)
 	CheckAdmin(player);
 	if (hadGift_Admin != true)
 	{
-		print("Admin permission not detected.");
+		Kprint( player, "Admin permission not detected.");
 		return true;
 	}
 
 	// if player only typed "gift"
 	if (args.len() == 0)
 	{
-		print("Give a valid argument.");
-		print("Example: gift <weaponId> <playerId>");
-		print("You can check weaponId by typing give and pressing tab to scroll through the IDs.");
+		Kprint( player, "Give a valid argument.");
+		Kprint( player, "Example: gift <weaponId> <playerId>");
+		Kprint( player, "You can check weaponId by typing give and pressing tab to scroll through the IDs.");
 		// print every single player's name and their id
 		int i = 0;
 		foreach (entity p in GetPlayerArray())
 		{
 			string playername = p.GetPlayerName();
-			print("[" + i.tostring() + "] " + playername);
+			Kprint( player, "[" + i.tostring() + "] " + playername);
 			i++
 		}
 		return true;
@@ -188,7 +188,7 @@ bool function Gift(entity player, array<string> args)
 	// if player typed "gift somethinghere"
 	switch (args[0]) {
 		case (""):
-		print("Give a valid argument.");
+		Kprint( player, "Give a valid argument.");
 		break;
 		case ("pd"):
 		weaponId = "mp_titanweapon_predator_cannon";
@@ -225,11 +225,11 @@ bool function Gift(entity player, array<string> args)
 				return true;
 			} else if (successfulweapons.len() == 1)
 			{
-				print("Weapon ID is " + successfulweapons[0])
+				Kprint( player, "Weapon ID is " + successfulweapons[0])
 				weaponId = successfulweapons[0]
 			} else if (successfulweapons.len() == 0)
 			{
-				print("Unable to detect weapon. Please try forcegift/fgift instead.")
+				Kprint( player, "Unable to detect weapon. Please try forcegift/fgift instead.")
 				return true;
 			}
 		break;
@@ -237,8 +237,8 @@ bool function Gift(entity player, array<string> args)
 	// if player typed "gift correctId" with no further arguments
 	if (args.len() == 1)
 	{
-		print("Example: gift <weaponId> <playerId> <mod>");
-		print("If you want to give yourself the weapon, put 0 as the playerId.");
+		Kprint( player, "Example: gift <weaponId> <playerId> <mod>");
+		Kprint( player, "If you want to give yourself the weapon, put 0 as the playerId.");
 		return true;
 	}
 	array<entity> playerstogift
@@ -308,7 +308,7 @@ void function KGiveWeapon( entity player, string weaponId , array<string> mods =
 				if ( weaponClassName == weaponId )
 				{
 					weaponToSwitch = weaponClassName
-					print(weaponToSwitch)
+					Kprint( player, weaponToSwitch)
 					bool hasWeapon = true;
 					break
 				}
@@ -327,10 +327,10 @@ void function KGiveWeapon( entity player, string weaponId , array<string> mods =
 		player.GiveWeapon( weaponId , successfulmods )
 		player.SetActiveWeaponByName( weaponId )
 		string playername = player.GetPlayerName();
-		print("Giving " + playername + " the selected weapon.");
+		Kprint( player, "Giving " + playername + " the selected weapon.");
 	} catch(exception)
 	{
-		print(weaponId + " is not a valid weapon.");
+		Kprint( player, weaponId + " is not a valid weapon.");
 	}
 #endif
 }
@@ -353,7 +353,7 @@ void function KGiveGrenade(entity player, string abilityId , array<string> mods 
 		}
 	}
 	string playername = player.GetPlayerName();
-	print("Giving " + playername + " the selected ordnance.");
+	Kprint( player, "Giving " + playername + " the selected ordnance.");
 #endif
 }
 
@@ -367,7 +367,7 @@ void function KGiveOffhandWeapon( entity player, string abilityId , array<string
 	CheckWeaponMod(abilityId, mods)
 	player.GiveOffhandWeapon( abilityId, OFFHAND_MELEE , successfulmods );
 	string playername = player.GetPlayerName();
-	print("Giving " + playername + " the selected melee.");
+	Kprint( player, "Giving " + playername + " the selected melee.");
 #endif
 }
 
@@ -381,7 +381,7 @@ void function KGiveTitanDefensive( entity player, string abilityId , array<strin
 	CheckWeaponMod(abilityId, mods)
 	player.GiveOffhandWeapon( abilityId, OFFHAND_SPECIAL , successfulmods );
 	string playername = player.GetPlayerName();
-	print("Giving " + playername + " the selected defensive.");
+	Kprint( player, "Giving " + playername + " the selected defensive.");
 #endif
 }
 
@@ -399,7 +399,7 @@ void function KGiveTitanTactical( entity player, string abilityId , array<string
 	CheckWeaponMod(abilityId, mods)
 	player.GiveOffhandWeapon( abilityId, OFFHAND_TITAN_CENTER , successfulmods );
 	string playername = player.GetPlayerName();
-	print("Giving " + playername + " the selected tactical.");
+	Kprint( player, "Giving " + playername + " the selected tactical.");
 #endif
 }
 
@@ -422,7 +422,7 @@ void function KGiveCore( entity player, string abilityId )
 	string playername = player.GetPlayerName();
 	entity soul = titan.GetTitanSoul();
 	SoulTitanCore_SetNextAvailableTime( soul, 100.0 );
-	print("Giving " + playername + " the selected core.");
+	Kprint( player, "Giving " + playername + " the selected core.");
 
 	// CoreActivate( player );
 #endif
@@ -438,7 +438,7 @@ void function KGiveAbility( entity player, string abilityId , array<string> mods
 	CheckWeaponMod(abilityId, mods)
 	player.GiveOffhandWeapon( abilityId, OFFHAND_SPECIAL , successfulmods );
 	string playername = player.GetPlayerName();
-	print("Giving " + playername + " the selected ability.");
+	Kprint( player, "Giving " + playername + " the selected ability.");
 #endif
 }
 

@@ -17,21 +17,21 @@ bool function SonarCMD(entity player, array<string> args)
 	CheckAdmin(player);
 	if (hadGift_Admin != true)
 	{
-		print("Admin permission not detected.");
+		Kprint( player, "Admin permission not detected.");
 		return true;
 	}
 
 	// if player only typed "sonar"
 	if (args.len() == 0)
 	{
-		print("Give a valid argument.");
-		print("Example: sonar <playerID> <playerID2> <playerID3> ... / imc / militia / all");
+		Kprint( player, "Give a valid argument.");
+		Kprint( player, "Example: sonar <playerID> <playerID2> <playerID3> ... / imc / militia / all");
 		// print every single player's name and their id
 		int i = 0;
 		foreach (entity p in GetPlayerArray())
 		{
 			string playername = p.GetPlayerName();
-			print("[" + i.tostring() + "] " + playername);
+			Kprint( player, "[" + i.tostring() + "] " + playername);
 			i++
 		}
 		return true;
@@ -72,7 +72,7 @@ bool function SonarCMD(entity player, array<string> args)
 
     if (args.len() == 1 )
     {
-        print("Please insert a duration.")
+        Kprint( player, "Please insert a duration.")
         return true;
     }
     int duration
@@ -82,7 +82,7 @@ bool function SonarCMD(entity player, array<string> args)
     }
 
 	if (args.len() > 2) {
-		print("Only two arguments required.")
+		Kprint( player, "Only two arguments required.")
         return true;
 	}
 

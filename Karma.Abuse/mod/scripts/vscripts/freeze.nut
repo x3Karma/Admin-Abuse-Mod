@@ -16,19 +16,19 @@ bool function FreezeCMD(entity player, array < string > args) {
     hadGift_Admin = false;
     CheckAdmin(player);
     if (hadGift_Admin != true) {
-        print("Admin permission not detected.");
+        Kprint( player, "Admin permission not detected.");
         return true;
     }
 
     // if player only typed "health"
     if (args.len() == 0) {
-        print("Give a valid argument.");
-        print("Example: freeze <playerId>, playerId = imc / militia / all");
+        Kprint( player, "Give a valid argument.");
+        Kprint( player, "Example: freeze <playerId>, playerId = imc / militia / all");
         // print every single player's name and their id
         int i = 0;
         foreach(entity p in GetPlayerArray()) {
             string playername = p.GetPlayerName();
-            print("[" + i.tostring() + "] " + playername);
+            Kprint( player, "[" + i.tostring() + "] " + playername);
             i++
         }
         return true;
@@ -69,7 +69,7 @@ bool function FreezeCMD(entity player, array < string > args) {
 
     if (args.len() > 1 )
 	{
-		print("Only 1 arguments required.")
+		Kprint( player, "Only 1 arguments required.")
 		return true;
 	}
 
@@ -84,19 +84,19 @@ bool function unFreezeCMD(entity player, array < string > args) {
     hadGift_Admin = false;
     CheckAdmin(player);
     if (hadGift_Admin != true) {
-        print("Admin permission not detected.");
+        Kprint( player, "Admin permission not detected.");
         return true;
     }
 
     // if player only typed "health"
     if (args.len() == 0) {
-        print("Give a valid argument.");
-        print("Example: unfreeze <playerId>, playerId = imc / militia / all");
+        Kprint( player, "Give a valid argument.");
+        Kprint( player, "Example: unfreeze <playerId>, playerId = imc / militia / all");
         // print every single player's name and their id
         int i = 0;
         foreach(entity p in GetPlayerArray()) {
             string playername = p.GetPlayerName();
-            print("[" + i.tostring() + "] " + playername);
+            Kprint( player, "[" + i.tostring() + "] " + playername);
             i++
         }
         return true;
@@ -137,7 +137,7 @@ bool function unFreezeCMD(entity player, array < string > args) {
 
     if (args.len() > 1 )
 	{
-		print("Only 1 arguments required.")
+		Kprint( player, "Only 1 arguments required.")
 		return true;
 	}
 

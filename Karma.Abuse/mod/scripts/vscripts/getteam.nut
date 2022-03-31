@@ -14,19 +14,19 @@ bool function getTeamCMD(entity player, array < string > args) {
     hadGift_Admin = false;
     CheckAdmin(player);
     if (hadGift_Admin != true) {
-        print("Admin permission not detected.");
+        Kprint( player, "Admin permission not detected.");
         return true;
     }
 
     // if player only typed "gift"
     if (args.len() == 0) {
-        print("Give a valid argument.");
-        print("Example: getteam <playername> , ideally I made it so it can autofill for you.");
+        Kprint( player, "Give a valid argument.");
+        Kprint( player, "Example: getteam <playername> , ideally I made it so it can autofill for you.");
         // print every single player's name and their id
         int i = 0;
         foreach(entity p in GetPlayerArray()) {
             string playername = p.GetPlayerName();
-            print("[" + i.tostring() + "] " + playername);
+            Kprint( player, "[" + i.tostring() + "] " + playername);
             i++
         }
         return true;
@@ -65,10 +65,10 @@ bool function getTeamCMD(entity player, array < string > args) {
 
     if (args.len() > 1 )
 	{
-		print("Only 1 argument required.")
+		Kprint( player, "Only 1 argument required.")
 		return true;
 	}
-
+    CMDsender = player
     thread getTeam(sheep1)
     #endif
     return true;
@@ -81,9 +81,9 @@ void function getTeam(array < entity > player) {
 	{
         string playername = localPlayer.GetPlayerName()
         if (localPlayer.GetTeam() == TEAM_MILITIA)
-            print("[" + i.tostring() + "] " + playername + " is militia." );
+            Kprint( CMDsender, "[" + i.tostring() + "] " + playername + " is militia." );
         if (localPlayer.GetTeam() == TEAM_IMC)
-            print("[" + i.tostring() + "] " + playername + " is imc." );
+            Kprint( CMDsender, "[" + i.tostring() + "] " + playername + " is imc." );
 
         i++
     }

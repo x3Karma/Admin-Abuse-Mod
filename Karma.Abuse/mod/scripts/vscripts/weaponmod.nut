@@ -19,7 +19,7 @@ void function PrintWeaponMods(entity weapon)
 	for( int i = 0; i < amods.len(); ++i )
 	{
 		string modId = amods[i]
-		print("[" + i.tostring() + "] " + modId);
+		Kprint( CMDsender, "[" + i.tostring() + "] " + modId);
 	}
 	#endif
 }
@@ -42,7 +42,7 @@ bool function GiveWM(entity player, array<string> args)
 	CheckAdmin(player);
 	if (hadGift_Admin != true && bypassPerms != true)
 	{
-		print("Admin permission not detected.");
+		Kprint( player, "Admin permission not detected.");
 		return true;
 	}
 	entity weapon = player.GetActiveWeapon();
@@ -54,9 +54,10 @@ bool function GiveWM(entity player, array<string> args)
 
 		if (args.len() == 0)
 		{
-			print("Give a valid mod.");
-			print("DO NOT PUT MORE THAN 4 MODS.");
-			print("You can get rid of a mod by typing the same modId.");
+			Kprint( player, "Give a valid mod.");
+			Kprint( player, "DO NOT PUT MORE THAN 4 MODS.");
+			Kprint( player, "You can get rid of a mod by typing the same modId.");
+			CMDsender = player
 			PrintWeaponMods(weapon);
 			return true;
 		}
@@ -71,16 +72,16 @@ bool function GiveWM(entity player, array<string> args)
 				modId = amods[a];
 			} catch(exception2)
 			{
-				print("Error: Unknown ID, assuming its a modId");
+				Kprint( player, "Error: Unknown ID, assuming its a modId");
 			}
 			weapon = player.GetActiveWeapon();
 			GiveWeaponMod(player, modId, weapon)
 			newString += (modId + " ");
 		}
-		print("Mods given to " + player.GetPlayerName() + " are " + newString);
+		Kprint( player, "Mods given to " + player.GetPlayerName() + " are " + newString);
 		bypassPerms = false;
 	} else {
-		print("Invalid weapon detected.");
+		Kprint( player, "Invalid weapon detected.");
 		return true;
 	}
 	return true;
@@ -109,7 +110,7 @@ void function GiveWeaponMod(entity player, string modId, entity weapon)
 			if (mods.len() < 5 || modId.find("burn_mod") != -1)
 				mods.append( modId ); // catch more than 4 mods
 			else if (mods.len() > 4) {
-				print("Error: More than 4 mods. Consider removing one.");
+				Kprint( player, "Error: More than 4 mods. Consider removing one.");
 				return;
 			}
 		}
@@ -117,7 +118,7 @@ void function GiveWeaponMod(entity player, string modId, entity weapon)
 		try {
 			player.GiveWeapon( weaponId, mods );
 		} catch(exception2) {
-			print("Error: Mod conflicts with one another.");
+			Kprint( player, "Error: Mod conflicts with one another.");
 			for( int i = 0; i < mods.len(); ++i )
 			{
 				if( mods[i] == modId )
