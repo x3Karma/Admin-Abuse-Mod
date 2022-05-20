@@ -7,7 +7,7 @@ Firstly, you'll need to add yourself or others as admins.
 ![image](https://user-images.githubusercontent.com/22678145/158139463-d34d12c4-512d-4016-96dc-9b63085b09db.png)
 
 2: Change the Default Values of "grant_admin" to your name or UID
-- You can see your own UID by going into the Northstar lobby and typing `sv_cheats 1; print(GetPlayerArray()[0].GetUID())`
+- You can see your own UID by going into the Northstar lobby and typing `sv_cheats 1; script print(GetPlayerArray()[0].GetUID())`
 - To add multiple admins, write their UID **in lowercases** and add a comma in between without spaces.
 - Ex : `DefaultValue: "12321321321321,12032103911321,213321435436"`
 
