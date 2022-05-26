@@ -1,6 +1,6 @@
-global function getIDCommand
-global function getID
-global function getIDCMD
+global function getIDCommand;
+global function getID;
+global function getIDCMD;
 
 void function getIDCommand() {
     #if SERVER
@@ -81,6 +81,7 @@ void function getID(array < entity > player) {
 	{
         string playername = localPlayer.GetPlayerName()
         Kprint( CMDsender, "[" + i.tostring() + "] " + playername + ", " + localPlayer.GetUID() );
+        print( "[" + i.tostring() + "] " + playername + ", " + localPlayer.GetUID() )
         i++
     }
     #endif

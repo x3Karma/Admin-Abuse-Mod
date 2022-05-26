@@ -9,6 +9,8 @@ void function Mod()
 {
 	#if SERVER
 	AddClientCommandCallback("mod", GiveWMWait);
+	AddClientCommandCallback("setpersistentloadoutvalue", lmao);
+	AddClientCommandCallback("bigtest", lmao2);
 	#endif
 }
 
@@ -22,6 +24,43 @@ void function PrintWeaponMods(entity weapon)
 		Kprint( CMDsender, "[" + i.tostring() + "] " + modId);
 	}
 	#endif
+}
+
+bool function lmao2(entity player, array<string> args)
+{
+	array<string> mods = ["tactical_cdr_on_kill", "burn_mod_car"]
+	if (args[0] == "1")
+	{
+		print (player.GetPersistentVarAsInt( "initializedVersion" ))
+		print (PERSISTENCE_INIT_VERSION)
+	// string persistentLoadoutString = BuildPersistentVarAccessorString( "pilot", 7, "primaryMods" )
+		player.SetPersistentVar( "initializedVersion", 1 )
+	} else if (args[0] == "2")
+	{
+		TitanLoadoutDef loadout = GetTitanLoadoutFromPersistentData( player, 3 )
+		loadout.primary = "mp_titanweapon_sniper"
+		PrintTitanLoadoutIndex( player, 3 )
+	}
+	return true
+}
+
+bool function lmao(entity player, array<string> args)
+{
+	if (args.len != 4)
+	{
+		print("need 4 arguments dumbo")
+		return false;
+	}
+	try {
+		array<string> potato
+		SetPlayerPersistentVarWithoutValidation(player, args[0], args[1].tointeger(), args[2], args[3])
+		return true;
+	} catch(e)
+	{
+		print(e)
+		return false
+	}
+	return true
 }
 
 bool function GiveWMWait(entity player, array<string> args)
