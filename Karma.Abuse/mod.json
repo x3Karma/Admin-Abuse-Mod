@@ -47,13 +47,6 @@
 			}
 		},
 		{
-			"Path": "testfunctions.nut",
-			"RunOn": "SERVER && MP",
-			"ServerCallback": {
-				"After": "TestFunctionsInit"
-			}
-		},
-		{
 			"Path": "getid.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
