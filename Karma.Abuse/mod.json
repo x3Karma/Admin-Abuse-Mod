@@ -37,169 +37,176 @@
 			"ServerCallback": {
 				"After": "AddCommands",
 				"After": "registerFunctionsAfter"
-			},
+			}
 		},
 		{
 			"Path": "announce.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "AnnounceCommand",
-			},
+				"After": "AnnounceCommand"
+			}
+		},
+		{
+			"Path": "testfunctions.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "TestFunctionsInit"
+			}
 		},
 		{
 			"Path": "getid.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "getIDCommand",
-			},
+				"After": "getIDCommand"
+			}
 		},
 		{
 			"Path": "airaccel.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "AirAccelCommand",
-			},
+				"After": "AirAccelCommand"
+			}
 		},
 		{
 			"Path": "checkplayername.nut",
-			"RunOn": "SERVER && MP",
+			"RunOn": "SERVER && MP"
 		},
 		{
 			"Path": "health.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "HealthCommand",
-			},
+				"After": "HealthCommand"
+			}
 		},
 		{
 			"Path": "predator.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "PredatorCommand",
-			},
+				"After": "PredatorCommand"
+			}
 		},
 		{
 			"Path": "gift.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "GiftCommand",
-			},
+				"After": "GiftCommand"
+			}
 		},
 		{
 			"Path": "getteam.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "getTeamCommand",
-			},
+				"After": "getTeamCommand"
+			}
 		},
 		{
 			"Path": "freeze.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "FreezeCommand",
-			},
+				"After": "FreezeCommand"
+			}
 		},
 		{
 			"Path": "slay.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "SlayCommand",
-			},
+				"After": "SlayCommand"
+			}
 		},
 		{
 			"Path": "sonar.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "SonarCommand",
-			},
+				"After": "SonarCommand"
+			}
 		},
 		{
 			"Path": "bubbleshield.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "BubbleShieldCommand",
-			},
+				"After": "BubbleShieldCommand"
+			}
 		},
 		{
 			"Path": "prop.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "PropCommand",
-			},
+				"After": "PropCommand"
+			}
 		},
 		{
 			"Path": "switchteams.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "STCommand",
-			},
+				"After": "STCommand"
+			}
 		},
 		{
 			"Path": "titanfallcmd.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "TitanfallCommand",
-			},
+				"After": "TitanfallCommand"
+			}
 		},
 		{
 			"Path": "vanish.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "VanishCommand",
-			},
+				"After": "VanishCommand"
+			}
 		},
 		{
 			"Path": "shuffleteams.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "ShuffleTeamsCommand",
-			},
+				"After": "ShuffleTeamsCommand"
+			}
 		},
 		{
 			"Path": "removeweapons.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "RemoveWeaponsCommand",
-			},
+				"After": "RemoveWeaponsCommand"
+			}
 		},
 		{
 			"Path": "fly.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "FlyCommand",
-			},
+				"After": "FlyCommand"
+			}
 		},
 		{
 			"Path": "teleport.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "TeleportCommand",
-			},
+				"After": "TeleportCommand"
+			}
 		},
 		{
 			"Path": "rearm.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "RearmCommand",
-			},
+				"After": "RearmCommand"
+			}
 		},
 		{
 			"Path": "getmods.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "GetMod",
-			},
+				"After": "GetMod"
+			}
 		},
 		{
 			"Path": "gift_weapons.nut",
-			"RunOn": "SERVER && MP",
+			"RunOn": "SERVER && MP"
 		},
 		{
 			"Path": "weaponmod.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
-				"After": "Mod",
-			},
+				"After": "Mod"
+			}
 		},
 	],
 }
