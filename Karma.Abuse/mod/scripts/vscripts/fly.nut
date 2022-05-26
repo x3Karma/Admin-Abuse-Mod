@@ -12,9 +12,6 @@ void function FlyCommand()
 bool function FlyCMD(entity player, array<string> args)
 {
 	#if SERVER
-	entity weapon = null;
-	string weaponId = ("");
-	array<entity> players = GetPlayerArray();
 	hadGift_Admin = false;
 	CheckAdmin(player);
 	if (hadGift_Admin != true)
