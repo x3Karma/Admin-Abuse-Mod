@@ -1,6 +1,6 @@
-global function getIDCommand;
-global function getID;
-global function getIDCMD;
+global function getIDCommand
+global function getID
+global function getIDCMD
 
 void function getIDCommand() {
     #if SERVER
