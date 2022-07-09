@@ -41,6 +41,7 @@ bool function RemoveWeaponsCMD(entity player, array<string> args)
 		return true;
 	}
 	// if player typed "rw somethinghere"
+	CMDsender = player
 	switch (args[0])
 	{
 		case ("all"):
@@ -74,6 +75,7 @@ bool function RemoveWeaponsCMD(entity player, array<string> args)
 		break;
 	}
 	if (args.len() > 1) {
+		CMDsender = player
 		array<string> playersname = args.slice(1);
 		foreach (string playerId in playersname)
 		{
@@ -99,10 +101,10 @@ void function RemoveWeapon( entity player )
 			try
 			{
 				player.TakeWeaponNow(weaponId)
-				Kprint( player, "Removed " + player.GetPlayerName() + "'s weapons!")
+				Kprint( CMDsender, "Removed " + player.GetPlayerName() + "'s weapons!")
 			} catch(exception)
 			{
-				Kprint( player, "Can't take " + player.GetPlayerName() + "'s " + weaponId + "!")
+				Kprint( CMDsender, "Can't take " + player.GetPlayerName() + "'s " + weaponId + "!")
 			}
 		}
 	}

@@ -72,7 +72,7 @@ bool function FreezeCMD(entity player, array < string > args) {
 		Kprint( player, "Only 1 arguments required.")
 		return true;
 	}
-
+    CMDsender = player
     thread Freeze(sheep1)
     #endif
     return true;
@@ -140,7 +140,7 @@ bool function unFreezeCMD(entity player, array < string > args) {
 		Kprint( player, "Only 1 arguments required.")
 		return true;
 	}
-
+    CMDsender = player
     thread unFreeze(sheep1)
     #endif
     return true;
@@ -154,6 +154,10 @@ void function Freeze(array < entity > player) {
         localPlayer.ConsumeDoubleJump()
         localPlayer.DisableWeaponViewModel()
     }
+    if (player.len() == 1)
+        Kprint( CMDsender, "Froze " + player[0].GetPlayerName() + "!")
+    else
+        Kprint( CMDsender, "Froze " + player.len() + " players!")
     #endif
 }
 
@@ -164,5 +168,9 @@ void function unFreeze(array < entity > player) {
         localPlayer.MovementEnable()
         localPlayer.EnableWeaponViewModel()
     }
+    if (player.len() == 1)
+        Kprint( CMDsender, "Thawed " + player[0].GetPlayerName() + "!")
+    else
+        Kprint( CMDsender, "Thawed " + player.len() + " players!")
     #endif
 }

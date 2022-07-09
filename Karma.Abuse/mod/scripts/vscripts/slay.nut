@@ -36,7 +36,7 @@ bool function SlayCMD(entity player, array<string> args)
 		}
 		return true;
 	}
-
+	CMDsender = player
 	switch (args[0])
 	{
 		case ("all"):
@@ -70,6 +70,7 @@ bool function SlayCMD(entity player, array<string> args)
 		break;
 	}
 	if (args.len() > 1) {
+		CMDsender = player
 		array<string> playersname = args.slice(1);
 		foreach (string playerId in playersname)
 		{
@@ -91,11 +92,11 @@ void function Slay(entity player)
 		if ( IsAlive( player ) )
 		{
 			player.Die()
-			Kprint( player, "Slayed " + player.GetPlayerName() + "!")
+			Kprint( CMDsender, "Slayed " + player.GetPlayerName() + "!")
 		}
 	} catch(e)
 	{
-		Kprint( player, "Unable to slay " + player.GetPlayerName() + ". Could be unalive lol.")
+		Kprint( CMDsender, "Unable to slay " + player.GetPlayerName() + ". Could be unalive lol.")
 	}
 #endif
 }

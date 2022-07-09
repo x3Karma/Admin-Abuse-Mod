@@ -63,12 +63,15 @@ bool function FlyCMD(entity player, array<string> args)
 		break;
 
 		default:
+			CMDsender = player
             CheckPlayerName(args[0])
 				foreach (entity p in successfulnames)
                     Fly(p)
 		break;
 	}
-	if (args.len() > 1) {
+	if (args.len() > 1) 
+	{
+		CMDsender = player
 		array<string> playersname = args.slice(1);
 		foreach (string playerId in playersname)
 		{
@@ -85,8 +88,14 @@ void function Fly( entity player )
 {
 	#if SERVER
 	if ( player.IsNoclipping() )
+	{
 		player.SetPhysics( MOVETYPE_WALK )
+		Kprint( CMDsender, player.GetPlayerName() + " stopped noclipping.")
+	}
 	else
+	{
 		player.SetPhysics( MOVETYPE_NOCLIP )
+		Kprint( CMDsender, player.GetPlayerName() + " started noclipping.")
+	}
 #endif
 }

@@ -79,6 +79,7 @@ bool function AirAccelCMD(entity player, array<string> args)
 	if (args.len() > 1) // airaccel playername 500
 	{
 		int value = args[1].tointeger()
+		CMDsender = player
         AirAccel(sheep1, value)
 	}
 
@@ -87,9 +88,10 @@ bool function AirAccelCMD(entity player, array<string> args)
 		int value = args[1].tointeger()
 		foreach (entity p in sheep1)
         	airaccel[p] <- value
+		
+		CMDsender = player
 		AirAccel(sheep1, value)
     }
-	CMDsender = player
 	if (args.len() > 3)
 	{
 		Chat_ServerPrivateMessage(player, Kprefix + "airaccel/aa <playername> <value> [save]", false)

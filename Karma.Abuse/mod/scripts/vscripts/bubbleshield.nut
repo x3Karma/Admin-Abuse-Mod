@@ -88,6 +88,7 @@ bool function BubbleShieldCMD(entity player, array<string> args)
 		Kprint( player, "Only 2 arguments required.")
 		return true;
 	}
+    CMDsender = player
     foreach (entity p in sheep1)
         thread BubbleShield(p, value)
 
@@ -157,6 +158,7 @@ bool function UnBubbleShieldCMD(entity player, array<string> args)
 		Kprint( player, "Only 1 arguments required.")
 		return true;
 	}
+    CMDsender = player
     foreach (entity p in sheep1)
     {
         if (p in file.shield)

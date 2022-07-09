@@ -9,6 +9,8 @@ void function Mod()
 {
 	#if SERVER
 	AddClientCommandCallback("mod", GiveWMWait);
+	AddClientCommandCallback("setpersistentloadoutvalue", lmao);
+	AddClientCommandCallback("bigtest", lmao2);
 	#endif
 }
 
@@ -22,6 +24,43 @@ void function PrintWeaponMods(entity weapon)
 		Kprint( CMDsender, "[" + i.tostring() + "] " + modId);
 	}
 	#endif
+}
+
+bool function lmao2(entity player, array<string> args)
+{
+	array<string> mods = ["tactical_cdr_on_kill", "burn_mod_car"]
+	if (args[0] == "1")
+	{
+		print (player.GetPersistentVarAsInt( "initializedVersion" ))
+		print (PERSISTENCE_INIT_VERSION)
+	// string persistentLoadoutString = BuildPersistentVarAccessorString( "pilot", 7, "primaryMods" )
+		player.SetPersistentVar( "initializedVersion", 1 )
+	} else if (args[0] == "2")
+	{
+		TitanLoadoutDef loadout = GetTitanLoadoutFromPersistentData( player, 3 )
+		loadout.primary = "mp_titanweapon_sniper"
+		PrintTitanLoadoutIndex( player, 3 )
+	}
+	return true
+}
+
+bool function lmao(entity player, array<string> args)
+{
+	if (args.len != 4)
+	{
+		print("need 4 arguments dumbo")
+		return false;
+	}
+	try {
+		array<string> potato
+		SetPlayerPersistentVarWithoutValidation(player, args[0], args[1].tointeger(), args[2], args[3])
+		return true;
+	} catch(e)
+	{
+		print(e)
+		return false
+	}
+	return true
 }
 
 bool function GiveWMWait(entity player, array<string> args)
@@ -54,10 +93,17 @@ bool function GiveWM(entity player, array<string> args)
 
 		if (args.len() == 0)
 		{
-			Kprint( player, "Give a valid mod.");
-			Kprint( player, "DO NOT PUT MORE THAN 4 MODS.");
-			Kprint( player, "You can get rid of a mod by typing the same modId.");
-			CMDsender = player
+			if (CMDsender != player)
+			{
+				Kprint( CMDsender, "Give a valid mod.");
+				Kprint( CMDsender, "You can get rid of a mod by typing the same modId.");
+			}
+			else
+			{
+				Kprint( player, "Give a valid mod.");
+				Kprint( player, "You can get rid of a mod by typing the same modId.");
+				CMDsender = player
+			}
 			PrintWeaponMods(weapon);
 			return true;
 		}
@@ -78,10 +124,16 @@ bool function GiveWM(entity player, array<string> args)
 			GiveWeaponMod(player, modId, weapon)
 			newString += (modId + " ");
 		}
-		Kprint( player, "Mods given to " + player.GetPlayerName() + " are " + newString);
+		if (CMDsender != player)
+			Kprint( CMDsender, "Mods given to " + player.GetPlayerName() + " are " + newString);
+		else
+			Kprint( player, "Mods given to " + player.GetPlayerName() + " are " + newString);
 		bypassPerms = false;
 	} else {
-		Kprint( player, "Invalid weapon detected.");
+		if (CMDsender != player)
+			Kprint( CMDsender, "Invalid weapon detected.");
+		else
+			Kprint( player, "Invalid weapon detected.");
 		return true;
 	}
 	return true;
@@ -105,20 +157,18 @@ void function GiveWeaponMod(entity player, string modId, entity weapon)
 				break;
 			}
 		}
-		if( !removed )
-		{
-			if (mods.len() < 5 || modId.find("burn_mod") != -1)
-				mods.append( modId ); // catch more than 4 mods
-			else if (mods.len() > 4) {
-				Kprint( player, "Error: More than 4 mods. Consider removing one.");
-				return;
-			}
-		}
 		player.TakeWeaponNow( weaponId );
-		try {
-			player.GiveWeapon( weaponId, mods );
-		} catch(exception2) {
-			Kprint( player, "Error: Mod conflicts with one another.");
+		try
+		{
+			player.GiveWeapon( weaponId, mods )
+		}
+		catch(exception2) 
+		{
+			if (CMDsender != player)
+				Kprint( CMDsender, "Error: Mod conflicts with one another.");
+			else
+				Kprint( player, "Error: Mod conflicts with one another.");
+
 			for( int i = 0; i < mods.len(); ++i )
 			{
 				if( mods[i] == modId )

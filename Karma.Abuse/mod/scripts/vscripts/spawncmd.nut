@@ -50,6 +50,7 @@ void function AddCommands()
 	#if SERVER
 	AddClientCommandCallback("cycletitanid", cycleTitanId);
 	AddClientCommandCallback("spawntitan", KSpawnTitan);
+	AddClientCommandCallback("spawnturrettick", SpawnTurretTick)
 	AddClientCommandCallback("spawnviper", SpawnViper);
 	AddClientCommandCallback("rpwn", rpwn);
 	AddClientCommandCallback("respawn", rpwn);
@@ -119,6 +120,7 @@ bool function rpwn(entity player, array<string> args)
 	array<entity> players = GetPlayerArray();
 	array<entity> player1 = []
 	entity player2 = null
+	CMDsender = player
 	switch (args[0])
 	{
 		case ("all"):
@@ -345,4 +347,81 @@ bool function SpawnViper(entity player, array<string> args)
 	DispatchSpawn( npc );
 	return true;
 	#endif
+}
+
+
+
+bool function SpawnTurretTick( entity player, array<string> args )
+{
+	hadGift_Admin = false;
+	CheckAdmin(player);
+	if (hadGift_Admin != true)
+	{
+		Kprint( player, "Admin permission not detected.");
+		return false;
+	}
+
+	if (args.len() > 0)
+	{
+		Kprint( player, "Too many arguments." )
+		return false
+	}
+	int team = player.GetTeam()
+
+	vector origin = GetPlayerCrosshairOrigin( player );
+	entity tick = CreateFragDrone( team, origin, <0,0,0> )
+	SetSpawnOption_AISettings(tick, "npc_frag_drone_fd")
+	tick.EnableNPCFlag( NPC_ALLOW_PATROL | NPC_ALLOW_INVESTIGATE | NPC_NEW_ENEMY_FROM_SOUND)
+	tick.EnableNPCMoveFlag(NPCMF_WALK_ALWAYS)
+	DispatchSpawn( tick )
+	tick.Minimap_AlwaysShow( TEAM_IMC, null )
+	tick.Minimap_AlwaysShow( TEAM_MILITIA, null )
+	tick.SetValueForModelKey( $"models/robots/drone_frag/drone_frag.mdl" )
+	StatusEffect_AddEndless( tick, eStatusEffect.speed_boost, 1 )
+
+	tick.SetTitle( "The Fuck You Tick" )
+	tick.SetTakeDamageType( DAMAGE_NO )
+	tick.SetDamageNotifications( false )
+	tick.SetNPCMoveSpeedScale( 10.0 )
+	ShowName( tick )
+
+
+	entity turret = CreateEntity( "npc_turret_sentry" )
+	turret.SetOrigin( origin + <0,0,30> )
+	turret.SetAngles( <0,0,0> )
+	turret.SetBossPlayer( player )
+	turret.ai.preventOwnerDamage = true
+	turret.StartDeployed()
+	SetTeam( turret, team )
+
+	SetSpawnOption_AISettings( turret, "npc_turret_sentry_burn_card_ap_fd" )
+	turret.SetParent( tick )
+	DispatchSpawn( turret )
+	turret.SetMaxHealth(500)
+	turret.SetHealth(turret.GetMaxHealth())
+
+	array<entity> players = GetPlayerArrayOfEnemies( tick.GetTeam() )
+	if ( players.len() != 0 )
+	{
+		entity player = GetClosest2D( players, tick.GetOrigin() )
+		tick.AssaultPoint( player.GetOrigin() )
+	}
+	UpdateEnemyMemoryWithinRadius( tick, 1000 )
+	thread TickThink( tick )
+	return true
+}
+
+void function TickThink( entity tick )
+{
+	array<entity> players
+	while( IsAlive( tick ) )
+	{
+		players = GetPlayerArrayOfEnemies( tick.GetTeam() )
+		if ( players.len() != 0 )
+		{
+			entity player = GetClosest2D( players, tick.GetOrigin() )
+			tick.AssaultPoint( player.GetOrigin() )
+		}
+		wait RandomFloatRange(10.0,20.0)
+	}
 }

@@ -38,6 +38,7 @@ bool function TitanfallCMD(entity player, array<string> args)
 		return true;
 	}
 
+	CMDsender = player
 	switch (args[0])
 	{
 		case ("all"):
@@ -71,6 +72,7 @@ bool function TitanfallCMD(entity player, array<string> args)
 		break;
 	}
 	if (args.len() > 1) {
+		CMDsender = player
 		array<string> playersname = args.slice(1);
 		foreach (string playerId in playersname)
 		{
@@ -96,7 +98,7 @@ void function Titanfall(entity player)
 		}
 	} catch(e)
 	{
-		Kprint( player, "Unable to drop " + player.GetPlayerName() + "'s titan. Could be already has a Titan lol.")
+		Kprint( CMDsender, "Unable to drop " + player.GetPlayerName() + "'s titan. Could be already has a Titan lol.")
 	}
 #endif
 }

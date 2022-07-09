@@ -66,6 +66,7 @@ bool function HealthCMD(entity player, array < string > args) {
 
     // if player typed "gift correctId" with no further arguments
     if (args.len() == 1) {
+        CMDsender = player
         GetHealth(sheep1)
         return true;
     }

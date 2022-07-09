@@ -46,7 +46,7 @@ bool function PredatorCMD(entity player, array<string> args)
 		}
 		return true;
 	}
-
+	CMDsender = player
 	switch (args[0])
 	{
 		case ("all"):
@@ -80,6 +80,7 @@ bool function PredatorCMD(entity player, array<string> args)
 		break;
 	}
 	if (args.len() > 1) {
+		CMDsender = player
 		array<string> playersname = args.slice(1);
 		foreach (string playerId in playersname)
 		{
@@ -111,7 +112,7 @@ void function Predator(entity player)
 		return;
 	} catch(e)
 	{
-		Kprint( player, "Unable to vanish " + player.GetPlayerName() + ". Could be unalive lol.")
+		Kprint( CMDsender, "Unable to vanish " + player.GetPlayerName() + ". Could be unalive lol.")
 	}
 #endif
 }

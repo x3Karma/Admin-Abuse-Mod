@@ -36,7 +36,7 @@ bool function RearmCMD(entity player, array<string> args)
 		}
 		return true;
 	}
-
+	CMDsender = player
 	switch (args[0])
 	{
 		case ("all"):
@@ -78,7 +78,6 @@ bool function RearmCMD(entity player, array<string> args)
                 RearmTest(p)
 		}
 	}
-	CMDsender = player
 	#endif
 	return true;
 }

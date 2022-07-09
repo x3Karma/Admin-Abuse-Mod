@@ -76,7 +76,7 @@ bool function TeleportCMD(entity player, array<string> args)
 		break;
 
 		case ("crosshair"):
-			Kprint( player, "You're supposed to put crosshair in the second argument")
+			Kprint( player, "You're supposed to put crosshair in the second argument.")
 			return true;
 		break;
 
@@ -96,18 +96,18 @@ bool function TeleportCMD(entity player, array<string> args)
 	switch (args[1])
 	{
 		case ("all"):
-			Kprint( player, "Bro you can't teleport everyone to teleport multiple people lmao.")
+			Kprint( player, "Bro you can't teleport everyone to multiple people lmao.")
 			return true;
 		break;
 
 		case ("imc"):
-			Kprint( player, "Bro you can't teleport everyone to teleport multiple people lmao.")
+			Kprint( player, "Bro you can't teleport everyone to multiple people lmao.")
 			return true;
 
 		break;
 
 		case ("militia"):
-			Kprint( player, "Bro you can't teleport everyone to teleport multiple people lmao.")
+			Kprint( player, "Bro you can't teleport everyone to multiple people lmao.")
 			return true;
 
 		break;

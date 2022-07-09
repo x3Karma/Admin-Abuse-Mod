@@ -42,7 +42,7 @@ bool function VanishCMD(entity player, array<string> args)
 		}
 		return true;
 	}
-
+	CMDsender = player
 	switch (args[0])
 	{
 		case ("all"):

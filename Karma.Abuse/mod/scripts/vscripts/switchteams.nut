@@ -40,6 +40,7 @@ bool function SwitchTeamCMD(entity player, array<string> args)
 		return true;
 	}
 
+	CMDsender = player
 	switch (args[0])
 	{
 		case ("all"):
@@ -73,6 +74,7 @@ bool function SwitchTeamCMD(entity player, array<string> args)
 		break;
 	}
 	if (args.len() > 1) {
+		CMDsender = player
 		array<string> playersname = args.slice(1);
 		foreach (string playerId in playersname)
 		{
@@ -96,7 +98,7 @@ void function SwitchTeam(entity player)
 			SetTeam( player, TEAM_IMC )
 	} catch(e)
 	{
-		Kprint( player, "Unable to switch " + player.GetPlayerName() + "'s team. Could be unalive lol.")
+		Kprint( CMDsender, "Unable to switch " + player.GetPlayerName() + "'s team. Could be unalive lol.")
 	}
 #endif
 }
