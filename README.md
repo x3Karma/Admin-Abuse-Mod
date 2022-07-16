@@ -62,6 +62,6 @@ To clear a player's loadout, you can type:
 `gift clear karma`
 which will clear all pre-existing loadouts for that player, if any.
 
-TL;DR
-`gift <weaponId> <playername/imc/militia/all> [mods1] [mods2] [mods...] [mods99] [save]`
-`gift <clear> <playername/imc/militia/all>`
+## TL;DR
+- `gift <weaponId> <playername/imc/militia/all> [mods1] [mods2] [mods...] [mods99] [save]`
+- `gift <clear> <playername/imc/militia/all>`
