@@ -10,6 +10,16 @@ global function KGiveCore
 global function CheckWeaponId
 global function Gift
 global function ForceGift
+global function CreateGiftLoadout
+
+global struct GiftLoadout
+{
+	entity player
+	string weaponId
+	array<string> mods
+}
+
+global array<GiftLoadout> GiftSaver
 
 // a lot of this is from Icepick's code so big props to them
 
@@ -19,6 +29,7 @@ void function GiftCommand()
 	AddClientCommandCallback("gift", Gift);
 	AddClientCommandCallback("fgift", ForceGift);
 	AddClientCommandCallback("forcegift", ForceGift);
+	AddCallback_OnPlayerRespawned( OnPlayerRespawned )
 	#endif
 }
 
@@ -159,7 +170,7 @@ bool function ForceGift(entity player, array<string> args)
 bool function Gift(entity player, array<string> args)
 {
 	#if SERVER
-	entity weapon = null;
+	bool clearloadouts = false
 	string weaponId = ("");
 	array<entity> players = GetPlayerArray();
 	hadGift_Admin = false;
@@ -212,6 +223,9 @@ bool function Gift(entity player, array<string> args)
 		case ("kraber"):
 		weaponId = "mp_weapon_sniper";
 		break;
+		case ("clear"):
+		clearloadouts = true
+		break
 		default:
 			CheckWeaponName(args[0])
 			if (successfulweapons.len() > 1)
@@ -277,18 +291,46 @@ bool function Gift(entity player, array<string> args)
 		break;
 	}
 	array<string> mods
-	if (args.len() > 2)
+	if (args.len() > 2 && !clearloadouts)
 	{
 		mods = args.slice(2);
 	}
+
 	CMDsender = player
-	foreach(entity p in playerstogift)
-		CheckWeaponId(p, weaponId, mods)
+	if (!clearloadouts)
+	{
+		bool saveloadout = false
+
+		int findIndex = mods.find( "save" )
+		if ( findIndex != -1 )
+		{	
+			mods.remove( findIndex )
+			saveloadout = true
+		}
+		foreach(entity p in playerstogift)
+			CheckWeaponId(p, weaponId, mods, true, saveloadout)
+	}
+	else
+	{
+		foreach(entity p in playerstogift)
+		{
+			//foreach(GiftLoadout loadout in GiftSaver)
+			for( int i = 0;  i < GiftSaver.len(); i++ )
+			{
+				if (GiftSaver[i].player == p)
+				{
+					GiftSaver.remove( i )
+					i--
+					print("[GiftLoadout] Removed " + p.GetPlayerName() + "'s loadout!")
+				}
+			}
+		}
+	}
 	#endif
 	return true;
 }
 
-void function KGiveWeapon( entity player, string weaponId , array<string> mods = [])
+void function KGiveWeapon( entity player, string weaponId , array<string> mods = [], bool notify = true)
 {
 	#if SERVER
 	array<entity> weapons = player.GetMainWeapons()
@@ -310,7 +352,6 @@ void function KGiveWeapon( entity player, string weaponId , array<string> mods =
 				if ( weaponClassName == weaponId )
 				{
 					weaponToSwitch = weaponClassName
-					Kprint( CMDsender, weaponToSwitch)
 					bool hasWeapon = true;
 					break
 				}
@@ -329,10 +370,12 @@ void function KGiveWeapon( entity player, string weaponId , array<string> mods =
 		player.GiveWeapon( weaponId , successfulmods )
 		player.SetActiveWeaponByName( weaponId )
 		string playername = player.GetPlayerName();
-		Kprint( CMDsender, "Giving " + playername + " the selected weapon.");
+		if (notify)
+			Kprint( CMDsender, "Giving " + playername + " the selected weapon.");
 	} catch(exception)
 	{
-		Kprint( CMDsender, weaponId + " is not a valid weapon.");
+		if (notify)
+			Kprint( CMDsender, weaponId + " is not a valid weapon.");
 	}
 #endif
 }
@@ -354,8 +397,6 @@ void function KGiveGrenade(entity player, string abilityId , array<string> mods 
 			weapon.SetWeaponPrimaryClipCount( weapon.GetWeaponPrimaryClipCount() + 1 );
 		}
 	}
-	string playername = player.GetPlayerName();
-	Kprint( CMDsender, "Giving " + playername + " the selected ordnance.");
 #endif
 }
 
@@ -368,8 +409,6 @@ void function KGiveOffhandWeapon( entity player, string abilityId , array<string
 
 	CheckWeaponMod(abilityId, mods)
 	player.GiveOffhandWeapon( abilityId, OFFHAND_MELEE , successfulmods );
-	string playername = player.GetPlayerName();
-	Kprint( CMDsender, "Giving " + playername + " the selected melee.");
 #endif
 }
 
@@ -382,8 +421,6 @@ void function KGiveTitanDefensive( entity player, string abilityId , array<strin
 
 	CheckWeaponMod(abilityId, mods)
 	player.GiveOffhandWeapon( abilityId, OFFHAND_SPECIAL , successfulmods );
-	string playername = player.GetPlayerName();
-	Kprint( CMDsender, "Giving " + playername + " the selected defensive.");
 #endif
 }
 
@@ -400,8 +437,6 @@ void function KGiveTitanTactical( entity player, string abilityId , array<string
 
 	CheckWeaponMod(abilityId, mods)
 	player.GiveOffhandWeapon( abilityId, OFFHAND_TITAN_CENTER , successfulmods );
-	string playername = player.GetPlayerName();
-	Kprint( CMDsender, "Giving " + playername + " the selected tactical.");
 #endif
 }
 
@@ -420,12 +455,10 @@ void function KGiveCore( entity player, string abilityId )
 	entity weapon = titan.GetOffhandWeapon( OFFHAND_EQUIPMENT );
 	if (weapon != null)
 		titan.TakeWeaponNow( weapon.GetWeaponClassName() );
+
 	titan.GiveOffhandWeapon( abilityId, OFFHAND_EQUIPMENT );
-	string playername = player.GetPlayerName();
 	entity soul = titan.GetTitanSoul();
 	SoulTitanCore_SetNextAvailableTime( soul, 100.0 );
-	Kprint( CMDsender, "Giving " + playername + " the selected core.");
-
 	// CoreActivate( player );
 #endif
 }
@@ -439,19 +472,25 @@ void function KGiveAbility( entity player, string abilityId , array<string> mods
 
 	CheckWeaponMod(abilityId, mods)
 	player.GiveOffhandWeapon( abilityId, OFFHAND_SPECIAL , successfulmods );
-	string playername = player.GetPlayerName();
-	Kprint( CMDsender, "Giving " + playername + " the selected ability.");
 #endif
 }
 
-void function CheckWeaponId(entity player, string weaponId, array<string> mods = [])
+void function CheckWeaponId(entity player, string weaponId, array<string> mods = [], bool notify = true, bool saveloadout = false)
 {
 	#if SERVER
+	string playername = player.GetPlayerName()
 	foreach (string p in kabilities)
 	{
 		if (weaponId == p)
 		{
 			KGiveAbility(player, weaponId, mods);
+			if (notify)
+				Kprint( CMDsender, "Giving " + playername + " the selected ability.")
+			if (saveloadout)
+			{
+				GiftSaver.append( CreateGiftLoadout( player, weaponId, mods ) )
+				Kprint( CMDsender, "Saving " + playername + " with weapon: " + weaponId + ". They will respawn with this weapon from now on.")
+			}
 			return;
 		}
 	}
@@ -461,6 +500,13 @@ void function CheckWeaponId(entity player, string weaponId, array<string> mods =
 		if (weaponId == p)
 		{
 			KGiveGrenade(player, weaponId, mods);
+			if (notify)
+				Kprint( CMDsender, "Giving " + playername + " the selected ordnance.")
+			if (saveloadout)
+			{
+				GiftSaver.append( CreateGiftLoadout( player, weaponId, mods ) )
+				Kprint( CMDsender, "Saving " + playername + " with weapon: " + weaponId + ". They will respawn with this weapon from now on.")
+			}
 			return;
 		}
 	}
@@ -470,6 +516,13 @@ void function CheckWeaponId(entity player, string weaponId, array<string> mods =
 		if (weaponId == p)
 		{
 			KGiveTitanDefensive(player, weaponId, mods);
+			if (notify)
+				Kprint( CMDsender, "Giving " + playername + " the selected defensive.")
+			if (saveloadout)
+			{
+				GiftSaver.append( CreateGiftLoadout( player, weaponId, mods ) )
+				Kprint( CMDsender, "Saving " + playername + " with weapon: " + weaponId + ". They will respawn with this weapon from now on.")
+			}
 			return;
 		}
 	}
@@ -479,6 +532,13 @@ void function CheckWeaponId(entity player, string weaponId, array<string> mods =
 		if (weaponId == p)
 		{
 			KGiveTitanTactical(player, weaponId, mods);
+			if (notify)
+				Kprint( CMDsender, "Giving " + playername + " the selected tactical.")
+			if (saveloadout)
+			{
+				GiftSaver.append( CreateGiftLoadout( player, weaponId, mods ) )
+				Kprint( CMDsender, "Saving " + playername + " with weapon: " + weaponId + ". They will respawn with this weapon from now on.")
+			}
 			return;
 		}
 	}
@@ -488,6 +548,13 @@ void function CheckWeaponId(entity player, string weaponId, array<string> mods =
 		if (weaponId == p)
 		{
 			KGiveCore(player, weaponId);
+			if (notify)
+				Kprint( CMDsender, "Giving " + playername + " the selected core.")
+			if (saveloadout)
+			{
+				GiftSaver.append( CreateGiftLoadout( player, weaponId, mods ) )
+				Kprint( CMDsender, "Saving " + playername + " with weapon: " + weaponId + ". They will respawn with this weapon from now on.")
+			}
 			return;
 		}
 	}
@@ -497,12 +564,44 @@ void function CheckWeaponId(entity player, string weaponId, array<string> mods =
 		if (weaponId == p)
 		{
 			KGiveOffhandWeapon(player, weaponId, mods);
+			if (notify)
+				Kprint( CMDsender, "Giving " + playername + " the selected melee.")
+			if (saveloadout)
+			{
+				GiftSaver.append( CreateGiftLoadout( player, weaponId, mods ) )
+				Kprint( CMDsender, "Saving " + playername + " with weapon: " + weaponId + ". They will respawn with this weapon from now on.")
+			}
 			return;
 		}
 	}
 
-	KGiveWeapon(player, weaponId , mods);
-	return;
+	KGiveWeapon(player, weaponId , mods, notify);
+	if (saveloadout)
+	{
+		GiftSaver.append( CreateGiftLoadout( player, weaponId, mods ) )
+		Kprint( CMDsender, "Saving " + playername + " with weapon: " + weaponId + ". They will respawn with this weapon from now on.")
+	}
 
 	#endif
+}
+
+GiftLoadout function CreateGiftLoadout( entity player, string weaponId, array<string> mods )
+{
+	GiftLoadout newloadout
+	newloadout.player = player
+	newloadout.weaponId = weaponId
+	newloadout.mods = mods
+	return newloadout
+}
+
+void function OnPlayerRespawned( entity player )
+{
+	foreach (GiftLoadout loadout in GiftSaver)
+	{
+		if (loadout.player != player)
+			continue
+
+		CheckWeaponId( player, loadout.weaponId, loadout.mods, false )
+		print("[GiftLoadout] Giving " + player.GetPlayerName() + " " + loadout.weaponId + " with " + loadout.mods.len() + " mods.")
+	}
 }

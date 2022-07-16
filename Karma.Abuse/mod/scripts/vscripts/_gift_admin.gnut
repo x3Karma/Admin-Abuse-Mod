@@ -64,7 +64,7 @@ ClServer_MessageStruct function ChatCallback(ClServer_MessageStruct message) {
     if (msg.len() == 0) // thanks Fifty very cool!
         return message
 
-    if (format("%c", msg[0]) == "!") {
+    if (format("%c", msg[0]) == "@") {
         printl("Chat Command Found")
         // command
         msg = msg.slice(1) // remove !
@@ -122,6 +122,7 @@ void function KCommandsInit()
     KcommandArr.append(new_KCommandStruct(["vanish", "v"],                                    true, VanishCMD))
     KcommandArr.append(new_KCommandStruct(["unvanish", "uv"],                                 true, UnVanishCMD))
     KcommandArr.append(new_KCommandStruct(["mod"],                                            true, GiveWMWait))
+    KcommandArr.append(new_KCommandStruct(["spawnturrettick"],                                true, SpawnTurretTick))
 }
 
 /*
