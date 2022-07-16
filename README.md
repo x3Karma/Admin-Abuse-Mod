@@ -43,5 +43,25 @@ Want to bully anyone who joins your server? Look no further with this mod! Now y
 - `bubbleshield/bs someone/imc/militia/all <duration>`
 - `unbubbleshield/unbs someone/imc/militia/all`
 - `airaccel/aa someone/imc/militia/all <value> [save]`
+- `spawnturrettick` spawns a funny tick with a turret at your crosshair.
 
 so, yeah. enjoy your players malding probably
+
+# v1.2.8 Gift Update
+Now you can save what weapons to gift to players so they will have the same weapons/abilities upon respawning!
+
+By inserting the word "save" anywhere after the 3rd argument, the weapon and mods you've given to any player will now save.
+
+For example, to respawn with an **Amped Smart Pistol** from now on, you can type:
+`gift smart karma burn save`
+which will always give an Amped Smart Pistol to the player(s) that contains the name "karma" after they respawn.
+
+Any loadouts will reset after map change.
+
+To clear a player's loadout, you can type:
+`gift clear karma`
+which will clear all pre-existing loadouts for that player, if any.
+
+TL;DR
+`gift <weaponId> <playername/imc/militia/all> [mods1] [mods2] [mods...] [mods99] [save]`
+`gift <clear> <playername/imc/militia/all>`
