@@ -4,6 +4,7 @@ global function SpawnViper
 global function AddCommands
 global function KSpawnTitan
 global function rpwn
+global function SpawnTurretTick
 
 global function registerFunctions
 global function registerFunctionsAfter
