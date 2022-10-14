@@ -61,6 +61,13 @@ void function AddCommands()
 bool function KSpawnTitan(entity a, array<string> args)
 {
 #if SERVER
+	hadGift_Admin = false;
+	CheckAdmin(a);
+	if (hadGift_Admin != true)
+	{
+		Kprint( a, "Admin permission not detected.");
+		return true;
+	}
 	entity player = GetPlayerArray()[0];
 	vector origin = GetPlayerCrosshairOrigin( player );
 	vector angles = player.EyeAngles();
@@ -311,6 +318,13 @@ void function RespawnAtSpawn(entity player, bool ISUSINGTITAN = false)
 bool function SpawnViper(entity player, array<string> args)
 {
 #if SERVER
+	hadGift_Admin = false;
+	CheckAdmin(player);
+	if (hadGift_Admin != true)
+	{
+		Kprint( player, "Admin permission not detected.");
+		return true;
+	}
 	const CROSSHAIR_VERT_OFFSET = 32;
 	string bossId = "Viper";
 
